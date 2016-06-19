@@ -15,6 +15,9 @@
  */
 package com.innoave.abacus.view
 
+import Orientation._
+import com.innoave.abacus.model.Bead
+import com.innoave.abacus.model.BeadRod
 import com.innoave.abacus.model.Digit
 import com.innoave.abacus.model.Numeral
 import com.innoave.abacus.model.Parameter
@@ -23,16 +26,15 @@ import scalafx.scene.layout.Pane
 import scalafx.scene.shape.Rectangle
 import scalafx.beans.property.ObjectProperty
 import scalafx.geometry.Insets
-import Orientation._
 
-class RodView(
-    val numberOfBeads: Int,
+class RodView[T <: Bead](
+    val initialBeadRod: BeadRod[T],
     val orientation: Orientation
     )(
     implicit val params: Parameter
     ) extends Pane {
 
-  def rodLength: Int = 2 * numberOfBeads * params.beadDiameter
+  def rodLength: Int = 2 * initialBeadRod.leftBeads.size * params.beadDiameter
 
   val rod = new Rectangle {
     width = params.rodDiameter
@@ -43,21 +45,23 @@ class RodView(
 
   children += rod
 
-  val countedBeads = ObjectProperty(Seq.empty[BeadView])
+  val beadRod: ObjectProperty[BeadRod[T]] = ObjectProperty(initialBeadRod)
 
-  val beads: Seq[BeadView] = for (
-      num <- 0 to (numberOfBeads - 1)
-    ) yield {
-      val bead = new BeadView {
+  val beads: Seq[BeadView] =
+    for {
+      bead <- initialBeadRod.leftBeads
+    } yield {
+      val beadView = new BeadView(bead) {
+        val index = initialBeadRod.leftBeads.indexOf(bead)
         radius = params.beadRadius - 1
         centerX = params.beadRadius
         centerY = orientation match {
-          case Top => 1 + params.beadRadius + (num * params.beadDiameter)
-          case Bottom => rodLength - (1 + params.beadRadius + (num * params.beadDiameter))
+          case Top => 1 + params.beadRadius + (index * params.beadDiameter)
+          case Bottom => rodLength - (1 + params.beadRadius + (index * params.beadDiameter))
         }
       }
-      children += bead
-      bead
+      children += beadView
+      beadView
     }
 
 }

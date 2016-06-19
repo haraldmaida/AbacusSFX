@@ -16,21 +16,29 @@
 package com.innoave.abacus.view
 
 import Orientation._
+import com.innoave.abacus.model.Bead
+import com.innoave.abacus.model.Decimal
+import com.innoave.abacus.model.DigitBead
+import com.innoave.abacus.model.DigitBeadRod
 import com.innoave.abacus.model.Parameter
 import scalafx.Includes._
 import scalafx.scene.layout.HBox
 
 class BoardView(
-    val numberOfRods: Int,
+    val numberOfPositions: Int,
     val numberOfBeadsPerRod: Int,
     val orientation: Orientation
     )(
     implicit val params: Parameter
     ) extends HBox {
 
-  val rods: Seq[RodView] = Seq.fill(numberOfRods) {
-    new RodView(numberOfBeadsPerRod, orientation)
-  }
+  val rods: IndexedSeq[RodView[DigitBead]] =
+    for {
+      position <- 0 to numberOfPositions
+    } yield {
+      val beadRod = DigitBeadRod(position, Decimal)
+      new RodView(beadRod, orientation)
+    }
 
   children = rods
 

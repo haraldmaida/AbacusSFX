@@ -15,11 +15,14 @@
  */
 package com.innoave.abacus.view
 
+import com.innoave.abacus.model.Bead
 import com.innoave.abacus.model.Parameter
 import scalafx.beans.property.BooleanProperty
 import scalafx.scene.shape.Circle
 
 class BeadView(
+    val bead: Bead
+    )(
     implicit val params: Parameter
     ) extends Circle {
 
