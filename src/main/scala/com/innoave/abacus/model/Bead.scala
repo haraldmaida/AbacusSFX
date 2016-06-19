@@ -15,4 +15,4 @@
  */
 package com.innoave.abacus.model
 
-case class Radix(val value: Int) extends AnyVal
+trait Bead

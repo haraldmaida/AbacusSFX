@@ -46,7 +46,7 @@ class RodView(
   val countedBeads = ObjectProperty(Seq.empty[BeadView])
 
   val beads: Seq[BeadView] = for (
-      num <- 0 to numberOfBeads - 1
+      num <- 0 to (numberOfBeads - 1)
     ) yield {
       val bead = new BeadView {
         radius = params.beadRadius - 1

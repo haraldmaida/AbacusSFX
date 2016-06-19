@@ -15,6 +15,6 @@
  */
 package com.innoave.abacus.model
 
-trait Digit {
-
-}
+case class Digit(
+    val value: Char
+    ) extends AnyVal

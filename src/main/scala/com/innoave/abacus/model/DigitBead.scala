@@ -15,4 +15,13 @@
  */
 package com.innoave.abacus.model
 
-case class Radix(val value: Int) extends AnyVal
+case class DigitBead(
+    val digit: Digit
+    ) extends Bead
+
+object DigitBead {
+
+  def forAllDigitsOf(numeralSystem: NumeralSystem): Seq[DigitBead] =
+      (numeralSystem.digits.take(1) ++ numeralSystem.digits.tail.reverse).map { x => DigitBead(x) }
+
+}

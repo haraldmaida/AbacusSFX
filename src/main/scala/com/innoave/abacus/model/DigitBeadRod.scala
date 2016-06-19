@@ -15,4 +15,20 @@
  */
 package com.innoave.abacus.model
 
-case class Radix(val value: Int) extends AnyVal
+case class DigitBeadRod(
+    val position: Int,
+    override val leftBeads: Seq[DigitBead],
+    override val rightBeads: Seq[DigitBead]
+    ) extends BeadRod[DigitBead] {
+
+  override def copy(leftBeads: Seq[DigitBead], rightBeads: Seq[DigitBead]) =
+      DigitBeadRod(position, leftBeads, rightBeads)
+
+}
+
+object DigitBeadRod {
+
+  def apply(position: Int, numeralSystem: NumeralSystem): DigitBeadRod =
+      DigitBeadRod(position, DigitBead.forAllDigitsOf(numeralSystem), Seq())
+
+}

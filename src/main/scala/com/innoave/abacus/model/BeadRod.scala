@@ -15,4 +15,30 @@
  */
 package com.innoave.abacus.model
 
-case class Radix(val value: Int) extends AnyVal
+trait BeadRod[T <: Bead] {
+
+  val leftBeads: Seq[T]
+  val rightBeads: Seq[T]
+
+  def moveBeads(touchedBead: Bead): BeadRod[T] =
+    leftBeads.indexOf(touchedBead) match {
+      case -1 =>
+        rightBeads.indexOf(touchedBead) match {
+          case -1 =>
+            this
+          case i =>
+            copy(
+                leftBeads ++ rightBeads.take(i + 1),
+                rightBeads.takeRight(rightBeads.size - (i + 1))
+                )
+        }
+      case i =>
+        copy(
+            leftBeads.take(i),
+            leftBeads.takeRight(leftBeads.size - i) ++ rightBeads
+            )
+    }
+
+  def copy(leftBeads: Seq[T], rightBeads: Seq[T]): BeadRod[T]
+
+}

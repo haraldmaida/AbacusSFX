@@ -17,28 +17,35 @@ package com.innoave.abacus.model
 
 trait NumeralSystem {
   def radix: Radix
+  def digits: Seq[Digit]
 }
 
 trait Binary extends NumeralSystem {
-  final val radix = Radix(2)
+  override final val radix = Radix(2)
+  override final val digits = Seq.range(0, radix.value).map { n => Digit((0x30 + n).toChar) }
 }
 
 object Binary extends Binary
 
 trait Octal extends NumeralSystem {
-  final val radix = Radix(8)
+  override final val radix = Radix(8)
+  override final val digits = Seq.range(0, radix.value).map { n => Digit((0x30 + n).toChar) }
 }
 
 object Octal extends Octal
 
 trait Decimal extends NumeralSystem {
-  final val radix = Radix(10)
+  override final val radix = Radix(10)
+  override final val digits = Seq.range(0, radix.value).map { n => Digit((0x30 + n).toChar) }
 }
 
 object Decimal extends Decimal
 
-trait Sexagesimal extends NumeralSystem {
-  final val radix = Radix(60)
+trait Hexadecimal extends NumeralSystem {
+  override final val radix = Radix(16)
+  override final val digits = Seq.range(0, 10).map { n => Digit((0x30 + n).toChar) } ++
+      Seq.range(0, 6).map { n => Digit((0x41 + n).toChar) }
+
 }
 
-object Sexagesimal extends Sexagesimal
+object Hexadecimal extends Hexadecimal
