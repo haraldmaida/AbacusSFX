@@ -13,19 +13,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.innoave.abacus.view
+package com.innoave.abacus.model
 
-import com.innoave.abacus.model.Ball
-import scalafx.scene.shape.Circle
-import com.innoave.abacus.model.Parameter
-
-class BallView(
-    val ball: Ball
-    )
-    (
-    implicit val params: Parameter
-    ) extends Circle {
-
-  radius = params.ballRadius
-
+trait Numeral {
+  def value: IndexedSeq[Digit]
 }

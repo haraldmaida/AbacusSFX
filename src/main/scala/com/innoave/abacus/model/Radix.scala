@@ -15,4 +15,4 @@
  */
 package com.innoave.abacus.model
 
-case class Ball()
+case class Radix(val number: Int) extends AnyVal

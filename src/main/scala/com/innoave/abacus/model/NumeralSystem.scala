@@ -13,11 +13,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.innoave.abacus.model.snapshots
+package com.innoave.abacus.model
 
-import com.innoave.abacus.model.Ball
+trait NumeralSystem {
+  def radix: Radix
+}
 
-case class RailSnapshot(
-  val leftBalls: Seq[Ball],
-  val rightBalls: Seq[Ball]
-)
+trait Binary extends NumeralSystem {
+  final val radix = Radix(2)
+}
+
+object Binary extends Binary
+
+trait Octal extends NumeralSystem {
+  final val radix = Radix(8)
+}
+
+object Octal extends Octal
+
+trait Decimal extends NumeralSystem {
+  final val radix = Radix(10)
+}
+
+object Decimal extends Decimal
+
+trait Sexagesimal extends NumeralSystem {
+  final val radix = Radix(60)
+}
+
+object Sexagesimal extends Sexagesimal

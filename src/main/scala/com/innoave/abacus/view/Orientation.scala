@@ -13,37 +13,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.innoave.abacus.app
+package com.innoave.abacus.view
 
-import com.innoave.abacus.model.DefaultParameter
-import com.innoave.abacus.view.BoardView
-import com.innoave.abacus.view.RodView
-import com.innoave.abacus.view.Orientation._
-import scalafx.Includes._
-import scalafx.application.JFXApp
-import scalafx.application.JFXApp.PrimaryStage
-import scalafx.scene.Scene
-import scalafx.scene.shape.Circle
-import scalafx.scene.layout.VBox
-
-object FxUiApp extends JFXApp {
-
-  implicit val params = DefaultParameter
-
-  stage = new PrimaryStage {
-    title = "Abacus SFX"
-    width = 1200
-    height = 800
-
-    val upperDeck = new BoardView(7, 2, Top)
-    val lowerDeck = new BoardView(7, 5, Bottom)
-
-    scene = new Scene {
-      content = new VBox {
-        children += upperDeck
-        children += lowerDeck
-      }
-    }
-  }
-
+object Orientation extends Enumeration {
+  type Orientation = Value
+  val Top = Value
+  val Bottom = Value
+  val Left = Value
+  val Right = Value
 }

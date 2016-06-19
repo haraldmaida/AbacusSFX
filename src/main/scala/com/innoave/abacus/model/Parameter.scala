@@ -18,13 +18,15 @@ package com.innoave.abacus.model
 trait Parameter {
 
   def radix: Int
-  def ballRadius: Int
-  def moveAway: Int
 
-  final def ballDiameter = 2 * ballRadius
+  def beadRadius: Int
+  final def beadDiameter = 2 * beadRadius
 
-  def boardWidth = radix * ballDiameter
-  def boardHeight = radix * ballDiameter
+  def rodRadius: Int
+  final def rodDiameter = 2 * rodRadius
+
+  def boardWidth: Int = radix * beadDiameter
+  def boardHeight: Int = radix * beadDiameter
 
 }
 
@@ -32,9 +34,9 @@ trait DefaultParameter extends Parameter {
 
   override val radix = 10
 
-  override val ballRadius = 25
+  override val beadRadius = 25
 
-  val moveAway = radix * ballDiameter
+  override val rodRadius = 5
 
 }
 

@@ -15,12 +15,14 @@
  */
 package com.innoave.abacus.view
 
-import com.innoave.abacus.model.snapshots.RailSnapshot
-import scalafx.beans.value.ObservableValue
-import scalafx.collections.ObservableArray
+import com.innoave.abacus.model.Parameter
+import scalafx.beans.property.BooleanProperty
+import scalafx.scene.shape.Circle
 
-class RailView(
-    val rail: RailSnapshot
-    ) {
+class BeadView(
+    implicit val params: Parameter
+    ) extends Circle {
+
+  radius = params.beadRadius - 1
 
 }
