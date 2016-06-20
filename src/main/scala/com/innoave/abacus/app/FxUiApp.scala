@@ -15,10 +15,18 @@
  */
 package com.innoave.abacus.app
 
+import com.innoave.abacus.model.AbacusSystem
+import com.innoave.abacus.model.Bead
+import com.innoave.abacus.model.BeadRod
+import com.innoave.abacus.model.Decimal
 import com.innoave.abacus.model.DefaultParameter
+import com.innoave.abacus.model.NumeralSystem
+import com.innoave.abacus.model.Position._
+import com.innoave.abacus.model.Soroban
+import com.innoave.abacus.service.AbacusBuilder
 import com.innoave.abacus.view.BoardView
-import com.innoave.abacus.view.RodView
 import com.innoave.abacus.view.Orientation._
+import com.innoave.abacus.view.RodView
 import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
@@ -30,18 +38,22 @@ object FxUiApp extends JFXApp {
 
   implicit val params = DefaultParameter
 
+  private val abacusBuilder = new AbacusBuilder(Soroban, Decimal)
+
   stage = new PrimaryStage {
     title = "Abacus SFX"
     width = 1200
     height = 800
 
-    val upperDeck = new BoardView(7, 2, Top)
-    val lowerDeck = new BoardView(7, 5, Bottom)
+    val heavenDeck = abacusBuilder.buildHeavenDeck().map { rods => new BoardView(rods, TopToBottom) }
+    val earthDeck = new BoardView(abacusBuilder.buildEarthDeck(), BottomToTop)
 
     scene = new Scene {
       content = new VBox {
-        children += upperDeck
-        children += lowerDeck
+        if (heavenDeck.isDefined) {
+          children += heavenDeck.get
+        }
+        children += earthDeck
       }
     }
   }

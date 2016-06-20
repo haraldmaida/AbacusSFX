@@ -20,8 +20,8 @@ import org.scalatest.Matchers
 
 class BeadRodSpec extends FlatSpec with Matchers {
 
-  "BeadRod with all beads on the left side" should
-      "move all beads to the right, when first bead is touched" in {
+  "BeadRod with all beads on cleared position" should
+      "move all beads to the counted position, when first bead is touched" in {
 
     val beadRod = DigitBeadRod(
         0,
@@ -49,7 +49,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
   }
 
   it should
-      "move one bead to the right, when last bead is touched" in {
+      "move one bead to the counted position, when last bead is touched" in {
 
     val beadRod = DigitBeadRod(
         1,
@@ -78,7 +78,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
   }
 
   it should
-      "move two beads to the right, when second last bead is touched" in {
+      "move two beads to counted position, when second last bead is touched" in {
 
     val beadRod = DigitBeadRod(
         999999,
@@ -106,7 +106,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
   }
 
   it should
-      "move all but one bead to the right, when second bead is touched" in {
+      "move all but one bead to the counted position, when second bead is touched" in {
 
     val beadRod = DigitBeadRod(
         3,
@@ -134,8 +134,8 @@ class BeadRodSpec extends FlatSpec with Matchers {
       )
   }
 
-  "BeadRod with all beads on the right side" should
-      "move all beads to the left, when last bead is touched" in {
+  "BeadRod with all beads on counted position" should
+      "move all beads to the cleared position, when last bead is touched" in {
 
     val beadRod = DigitBeadRod(
         4,
@@ -163,7 +163,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
   }
 
   it should
-      "move one bead to the left, when first bead is touched" in {
+      "move one bead to the cleared position, when first bead is touched" in {
 
     val beadRod = DigitBeadRod(
         5,
@@ -192,7 +192,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
   }
 
   it should
-      "move two beads to the left, when second bead is touched" in {
+      "move two beads to the cleared position, when second bead is touched" in {
 
     val beadRod = DigitBeadRod(
         6,
@@ -221,7 +221,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
   }
 
   it should
-      "move all but one bead to the left, when second last bead is touched" in {
+      "move all but one bead to the cleared position, when second last bead is touched" in {
 
     val beadRod = DigitBeadRod(
         7,
@@ -249,8 +249,8 @@ class BeadRodSpec extends FlatSpec with Matchers {
       )
   }
 
-  "BeadRod with one bead on the right side" should
-      "move all left beads to the right, when first bead is touched" in {
+  "BeadRod with one bead on the counted position" should
+      "move all cleared beads to the counted position, when first bead is touched" in {
 
     val beadRod = DigitBeadRod(
         8,
@@ -279,7 +279,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
   }
 
   it should
-      "move one bead from left to right, when last left bead is touched" in {
+      "move one bead from cleared to counted position, when last cleared bead is touched" in {
 
     val beadRod = DigitBeadRod(
         9,
@@ -307,8 +307,8 @@ class BeadRodSpec extends FlatSpec with Matchers {
       )
   }
 
-  "BeadRod with one bead on the left side" should
-      "move all right beads to the left, when last bead is touched" in {
+  "BeadRod with one bead on the cleared position" should
+      "move all counted beads to the counted position, when last bead is touched" in {
 
     val beadRod = DigitBeadRod(
         10,
@@ -337,7 +337,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
   }
 
   it should
-      "move one bead from right to the left, when first right bead is touched" in {
+      "move one bead from counted to the cleared position, when first right bead is touched" in {
 
     val beadRod = DigitBeadRod(
         11,

@@ -34,7 +34,7 @@ class RodView[T <: Bead](
     implicit val params: Parameter
     ) extends Pane {
 
-  def rodLength: Int = 2 * initialBeadRod.leftBeads.size * params.beadDiameter
+  def rodLength: Int = 2 * initialBeadRod.clearedBeads.size * params.beadDiameter
 
   val rod = new Rectangle {
     width = params.rodDiameter
@@ -49,15 +49,21 @@ class RodView[T <: Bead](
 
   val beads: Seq[BeadView] =
     for {
-      bead <- initialBeadRod.leftBeads
+      bead <- initialBeadRod.clearedBeads
     } yield {
       val beadView = new BeadView(bead) {
-        val index = initialBeadRod.leftBeads.indexOf(bead)
+        val index = initialBeadRod.clearedBeads.indexOf(bead)
         radius = params.beadRadius - 1
-        centerX = params.beadRadius
+        val offset = 1 + params.beadRadius + (index * params.beadDiameter)
+        centerX = orientation match {
+          case LeftToRight => offset
+          case RightToLeft => rodLength - offset
+          case _ => params.beadRadius
+        }
         centerY = orientation match {
-          case Top => 1 + params.beadRadius + (index * params.beadDiameter)
-          case Bottom => rodLength - (1 + params.beadRadius + (index * params.beadDiameter))
+          case TopToBottom => offset
+          case BottomToTop => rodLength - offset
+          case _ => params.beadRadius
         }
       }
       children += beadView

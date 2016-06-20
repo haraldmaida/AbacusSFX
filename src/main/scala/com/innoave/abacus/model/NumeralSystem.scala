@@ -17,35 +17,38 @@ package com.innoave.abacus.model
 
 trait NumeralSystem {
   def radix: Radix
-  def digits: Seq[Digit]
+  final val digits: Seq[Digit] = Seq.range(0, radix.value).map { n => digitFor(n) }
+  def digitFor(value: Int): Digit
 }
 
-trait Binary extends NumeralSystem {
+sealed trait Binary extends NumeralSystem {
   override final val radix = Radix(2)
-  override final val digits = Seq.range(0, radix.value).map { n => Digit((0x30 + n).toChar) }
+  override final def digitFor(value: Int) = Digit((0x30 + value).toChar)
 }
 
 object Binary extends Binary
 
-trait Octal extends NumeralSystem {
+sealed trait Octal extends NumeralSystem {
   override final val radix = Radix(8)
-  override final val digits = Seq.range(0, radix.value).map { n => Digit((0x30 + n).toChar) }
+  override final def digitFor(value: Int) = Digit((0x30 + value).toChar)
 }
 
 object Octal extends Octal
 
-trait Decimal extends NumeralSystem {
+sealed trait Decimal extends NumeralSystem {
   override final val radix = Radix(10)
-  override final val digits = Seq.range(0, radix.value).map { n => Digit((0x30 + n).toChar) }
+  override final def digitFor(value: Int) = Digit((0x30 + value).toChar)
 }
 
 object Decimal extends Decimal
 
-trait Hexadecimal extends NumeralSystem {
+sealed trait Hexadecimal extends NumeralSystem {
   override final val radix = Radix(16)
-  override final val digits = Seq.range(0, 10).map { n => Digit((0x30 + n).toChar) } ++
-      Seq.range(0, 6).map { n => Digit((0x41 + n).toChar) }
-
+  override final def digitFor(value: Int) =
+    if (0 <= value && value < 10)
+      Digit((0x30 + value).toChar)
+    else
+      Digit((0x31 + value).toChar)
 }
 
 object Hexadecimal extends Hexadecimal

@@ -17,8 +17,8 @@ package com.innoave.abacus.view
 
 object Orientation extends Enumeration {
   type Orientation = Value
-  val Top = Value
-  val Bottom = Value
-  val Left = Value
-  val Right = Value
+  val TopToBottom = Value
+  val BottomToTop = Value
+  val LeftToRight = Value
+  val RightToLeft = Value
 }

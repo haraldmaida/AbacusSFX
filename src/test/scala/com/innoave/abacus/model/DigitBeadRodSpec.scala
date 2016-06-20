@@ -21,7 +21,7 @@ import org.scalatest.Matchers
 class DigitBeadRodSpec extends FlatSpec with Matchers {
 
   "A new DigitBeadRod for the decimal system" should
-    "contain all possible beads on the left in specific order" in {
+    "contain all possible beads on the cleared position in specific order" in {
 
     DigitBeadRod(1, Decimal) shouldBe DigitBeadRod(
         1,
@@ -36,7 +36,7 @@ class DigitBeadRodSpec extends FlatSpec with Matchers {
   }
 
   "DigitBeadRod for all digits of the binary system" should
-    "contain all possible beads on the left in specific order" in {
+    "contain all possible beads on the cleared position in specific order" in {
 
     DigitBeadRod(2, Binary) shouldBe DigitBeadRod(
         2,
@@ -49,7 +49,7 @@ class DigitBeadRodSpec extends FlatSpec with Matchers {
   }
 
   "DigitBeadRod for all digits of the octal system" should
-    "contain all possible beads on the left in specific order" in {
+    "contain all possible beads on the cleared position in specific order" in {
 
     DigitBeadRod(999, Octal) shouldBe DigitBeadRod(
         999,
@@ -62,7 +62,7 @@ class DigitBeadRodSpec extends FlatSpec with Matchers {
   }
 
   "DigitBeadRod for all digits of the hexadecimal system" should
-    "contain all possible beads on the left in specific order" in {
+    "contain all possible beads on the cleared position in specific order" in {
 
     DigitBeadRod(0, Hexadecimal) shouldBe DigitBeadRod(
         0,

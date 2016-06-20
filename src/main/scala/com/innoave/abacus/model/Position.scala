@@ -15,30 +15,12 @@
  */
 package com.innoave.abacus.model
 
-trait BeadRod[T <: Bead] {
-
-  val clearedBeads: Seq[T]
-  val countedBeads: Seq[T]
-
-  def moveBeads(touchedBead: Bead): BeadRod[T] =
-    clearedBeads.indexOf(touchedBead) match {
-      case -1 =>
-        countedBeads.indexOf(touchedBead) match {
-          case -1 =>
-            this
-          case i =>
-            copy(
-                clearedBeads ++ countedBeads.take(i + 1),
-                countedBeads.takeRight(countedBeads.size - (i + 1))
-                )
-        }
-      case i =>
-        copy(
-            clearedBeads.take(i),
-            clearedBeads.takeRight(clearedBeads.size - i) ++ countedBeads
-            )
-    }
-
-  def copy(clearedBeads: Seq[T], countedBeads: Seq[T]): BeadRod[T]
-
+object Position extends Enumeration {
+  type Position = Value
+  val Top = Value
+  val Bottom = Value
+  val Left = Value
+  val Right = Value
+  val Outmost = Value
+  val Innermost = Value
 }
