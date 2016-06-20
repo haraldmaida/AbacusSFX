@@ -22,10 +22,12 @@ import com.innoave.abacus.model.Digit
 import com.innoave.abacus.model.Numeral
 import com.innoave.abacus.model.Parameter
 import scalafx.Includes._
-import scalafx.scene.layout.Pane
-import scalafx.scene.shape.Rectangle
+import scalafx.animation.TranslateTransition
 import scalafx.beans.property.ObjectProperty
 import scalafx.geometry.Insets
+import scalafx.scene.input.MouseEvent
+import scalafx.scene.layout.Pane
+import scalafx.scene.shape.Rectangle
 
 class RodView[T <: Bead](
     val initialBeadRod: BeadRod[T],
@@ -34,18 +36,51 @@ class RodView[T <: Bead](
     implicit val params: Parameter
     ) extends Pane {
 
-  def rodLength: Int = 2 * initialBeadRod.clearedBeads.size * params.beadDiameter
+  val moveDistance: Int = initialBeadRod.clearedBeads.size * params.beadDiameter + params.rodLengthAugment
+
+  val moveX: Int = orientation match {
+        case LeftToRight => moveDistance
+        case RightToLeft => - moveDistance
+        case _ => 0
+      }
+  val moveY: Int = orientation match {
+        case TopToBottom => moveDistance
+        case BottomToTop => - moveDistance
+        case _ => 0
+      }
+  val offset0: Int = 1 + params.beadRadius
+  val rodLength: Int = 1 + 2 * initialBeadRod.clearedBeads.size * params.beadDiameter + params.rodLengthAugment
 
   val rod = new Rectangle {
     width = params.rodDiameter
     height = rodLength
     x = params.beadRadius - (params.rodRadius / 2) - 2
-    y = 1
+    y = 0
   }
+
+  margin = Insets(12)
 
   children += rod
 
   val beadRod: ObjectProperty[BeadRod[T]] = ObjectProperty(initialBeadRod)
+  beadRod.onChange { (_, oldBeadRod, newBeadRod) =>
+      if (newBeadRod.position == oldBeadRod.position) {
+        newBeadRod.clearedBeads.reverse.foreach { bead =>
+          beadViewFor(bead).foreach { bv =>
+            if (bv.translateX != 0 || bv.translateY != 0) {
+              moveToCleared(bv)
+            }
+          }
+        }
+        newBeadRod.countedBeads.foreach { bead =>
+          beadViewFor(bead).foreach { bv =>
+            if (bv.translateX != moveX || bv.translateY != moveY) {
+              moveToCounted(bv)
+            }
+          }
+        }
+      }
+    }
 
   val beads: Seq[BeadView] =
     for {
@@ -54,20 +89,44 @@ class RodView[T <: Bead](
       val beadView = new BeadView(bead) {
         val index = initialBeadRod.clearedBeads.indexOf(bead)
         radius = params.beadRadius - 1
-        val offset = 1 + params.beadRadius + (index * params.beadDiameter)
+        val offsetN = offset0 + (index * params.beadDiameter)
         centerX = orientation match {
-          case LeftToRight => offset
-          case RightToLeft => rodLength - offset
+          case LeftToRight => offsetN
+          case RightToLeft => rodLength - offsetN
           case _ => params.beadRadius
         }
         centerY = orientation match {
-          case TopToBottom => offset
-          case BottomToTop => rodLength - offset
+          case TopToBottom => offsetN
+          case BottomToTop => rodLength - offsetN
           case _ => params.beadRadius
+        }
+        onMouseClicked = { ev: MouseEvent =>
+          beadRod() = beadRod().moveBeads(bead)
         }
       }
       children += beadView
       beadView
+    }
+
+  def beadViewFor(bead: Bead): Option[BeadView] =
+    beads.find { x => x.bead == bead }
+
+  private def moveToCleared(beadToMove: BeadView) {
+      new TranslateTransition {
+          node = beadToMove
+          toX = 0
+          toY = 0
+          duration = params.beadMovingDuration
+        }.playFromStart
+    }
+
+  private def moveToCounted(beadToMove: BeadView) {
+      new TranslateTransition {
+          node = beadToMove
+          toX = moveX
+          toY = moveY
+          duration = params.beadMovingDuration
+        }.playFromStart
     }
 
 }

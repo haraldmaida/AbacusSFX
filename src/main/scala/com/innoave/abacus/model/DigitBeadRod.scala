@@ -16,7 +16,7 @@
 package com.innoave.abacus.model
 
 case class DigitBeadRod(
-    val position: Int,
+    override val position: Int,
     override val clearedBeads: Seq[DigitBead],
     override val countedBeads: Seq[DigitBead]
     ) extends BeadRod[DigitBead] {

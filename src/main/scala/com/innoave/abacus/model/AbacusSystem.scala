@@ -19,13 +19,13 @@ import Position._
 
 trait AbacusSystem {
 
-  val numberOfOneValueBeads: Int
+  def numberOfOneValueBeads: Int
 
-  val numberOfFiveValueBeads: Option[Int]
+  def numberOfFiveValueBeads: Option[Int]
 
-  val clearedAt: Position
+  def clearedAt: Position
 
-  val typicalNumberOfRods: Int
+  def typicalNumberOfRods: Int
 
 }
 

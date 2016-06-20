@@ -17,6 +17,8 @@ package com.innoave.abacus.model
 
 trait BeadRod[T <: Bead] {
 
+  val position: Int
+
   val clearedBeads: Seq[T]
   val countedBeads: Seq[T]
 

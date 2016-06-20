@@ -31,25 +31,25 @@ class AbacusBuilder(
   def buildBeadFor(value: Int): DigitBead =
     DigitBead(numeralSystem.digitFor(value))
 
-  def buildBeadRodFor(position: Int, numberOfRods: Int): DigitBeadRod =
+  def buildBeadRodFor(position: Int, start: Int, end: Int): DigitBeadRod =
     DigitBeadRod(position,
-      for (num <- 0 to numberOfRods) yield { buildBeadFor(num) },
+      for (num <- start to end) yield { buildBeadFor(num) },
       Seq()
     )
 
   def buildEarthDeck(numberOfRods: Int = abacusSystem.typicalNumberOfRods): Seq[DigitBeadRod] =
     for (
-      position <- 0 to numberOfRods
+      position <- 0 to (numberOfRods - 1)
     ) yield {
-      buildBeadRodFor(position, abacusSystem.numberOfOneValueBeads)
+      buildBeadRodFor(position, 1, abacusSystem.numberOfOneValueBeads)
     }
 
   def buildHeavenDeck(numberOfRods: Int = abacusSystem.typicalNumberOfRods): Option[Seq[DigitBeadRod]] =
     abacusSystem.numberOfFiveValueBeads.flatMap { numberOfBeads => Some(
       for (
-        position <- 0 to numberOfRods
+        position <- 0 to (numberOfRods - 1)
       ) yield {
-        buildBeadRodFor(position, numberOfBeads)
+        buildBeadRodFor(position, 1, numberOfBeads)
       })
     }
 

@@ -15,18 +15,23 @@
  */
 package com.innoave.abacus.model
 
+import scalafx.util.Duration
+
 trait Parameter {
 
   def radix: Int
 
   def beadRadius: Int
-  final def beadDiameter = 2 * beadRadius
+  final def beadDiameter: Int = 2 * beadRadius
 
   def rodRadius: Int
-  final def rodDiameter = 2 * rodRadius
+  final def rodDiameter: Int = 2 * rodRadius
+  def rodLengthAugment: Int
 
   def boardWidth: Int = radix * beadDiameter
   def boardHeight: Int = radix * beadDiameter
+
+  def beadMovingDuration: Duration
 
 }
 
@@ -37,6 +42,10 @@ trait DefaultParameter extends Parameter {
   override val beadRadius = 25
 
   override val rodRadius = 5
+
+  override val rodLengthAugment = 1
+
+  override val beadMovingDuration: Duration = Duration(200)
 
 }
 

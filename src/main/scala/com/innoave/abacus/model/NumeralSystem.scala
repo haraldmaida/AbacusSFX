@@ -17,7 +17,7 @@ package com.innoave.abacus.model
 
 trait NumeralSystem {
   def radix: Radix
-  final val digits: Seq[Digit] = Seq.range(0, radix.value).map { n => digitFor(n) }
+  final def digits: Seq[Digit] = Seq.range(0, radix.value).map { n => digitFor(n) }
   def digitFor(value: Int): Digit
 }
 
