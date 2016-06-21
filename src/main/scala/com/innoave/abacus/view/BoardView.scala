@@ -29,12 +29,20 @@ class BoardView[T <: Bead](
     implicit val params: Parameter
     ) extends HBox {
 
-  val rods: Seq[RodView[T]] =
+  val rods: Seq[RodView[T]] = {
     for {
       beadsRod <- beadsRods
     } yield {
-      new RodView(beadsRod, orientation)
+      val rodView = new RodView(beadsRod, orientation)
+      if (beadsRod.clearedBeads.size > 2 && beadsRod.position % 3 == 2) {
+        rodView.beads.last.styleClass += "group-marker-bead"
+        rodView.beads.take(rodView.beads.size - 1).foreach { bv => bv.styleClass += "bead" }
+      } else {
+        rodView.beads.foreach { bv => bv.styleClass += "bead" }
+      }
+      rodView
     }
+  }
 
   children = rods
 

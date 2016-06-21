@@ -49,6 +49,7 @@ object FxUiApp extends JFXApp {
     val earthDeck = new BoardView(abacusBuilder.buildEarthDeck(), BottomToTop)
 
     scene = new Scene {
+      stylesheets += "/styles/soroban.css"
       content = new VBox {
         if (heavenDeck.isDefined) {
           children += heavenDeck.get

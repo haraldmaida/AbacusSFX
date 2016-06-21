@@ -36,6 +36,8 @@ class RodView[T <: Bead](
     implicit val params: Parameter
     ) extends Pane {
 
+  styleClass += "rod-view"
+
   val moveDistance: Int = initialBeadRod.clearedBeads.size * params.beadDiameter + params.rodLengthAugment
 
   val moveX: Int = orientation match {
@@ -52,6 +54,7 @@ class RodView[T <: Bead](
   val rodLength: Int = 1 + 2 * initialBeadRod.clearedBeads.size * params.beadDiameter + params.rodLengthAugment
 
   val rod = new Rectangle {
+    styleClass += "rod"
     width = params.rodDiameter
     height = rodLength
     x = params.beadRadius - (params.rodRadius / 2) - 2
