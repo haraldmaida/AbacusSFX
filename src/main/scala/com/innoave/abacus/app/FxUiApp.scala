@@ -24,7 +24,7 @@ import com.innoave.abacus.model.NumeralSystem
 import com.innoave.abacus.model.Position._
 import com.innoave.abacus.model.Soroban
 import com.innoave.abacus.service.AbacusBuilder
-import com.innoave.abacus.view.BoardView
+import com.innoave.abacus.view.DeckView
 import com.innoave.abacus.view.Orientation._
 import com.innoave.abacus.view.RodView
 import scalafx.Includes._
@@ -42,11 +42,13 @@ object FxUiApp extends JFXApp {
 
   private val sorobanBuilder = new AbacusBuilder(Soroban, Decimal)
 
-  val heavenDeck = sorobanBuilder.buildHeavenDeck().map { rods => new BoardView(rods, TopToBottom) }
-  val earthDeck = new BoardView(sorobanBuilder.buildEarthDeck(), BottomToTop)
+  val heavenDeck = sorobanBuilder.buildHeavenDeck().map { rods => new DeckView(rods, TopToBottom) }
+  val earthDeck = new DeckView(sorobanBuilder.buildEarthDeck(), BottomToTop)
 
   val sorobanView = new VBox {
-    styleClass ++= Seq("abacus", "soroban")
+//    stylesheets += "/styles/soroban.css"
+    styleClass += "board-view"
+    styleClass += "soroban"
     if (heavenDeck.isDefined) {
       children += heavenDeck.get
     }
@@ -54,7 +56,10 @@ object FxUiApp extends JFXApp {
   }
 
   val scenePanel = new BorderPane {
-    center = sorobanView
+    styleClass += "abacus"
+    center = new StackPane {
+      children += sorobanView
+    }
   }
 
   stage = new PrimaryStage {

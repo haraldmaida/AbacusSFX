@@ -17,15 +17,16 @@ package com.innoave.abacus.view
 
 import com.innoave.abacus.model.Bead
 import com.innoave.abacus.model.Parameter
+import com.innoave.abacus.view.Orientation._
 import scalafx.beans.property.BooleanProperty
-import scalafx.scene.shape.Circle
+import scalafx.scene.shape.Ellipse
 
 class BeadView(
     val bead: Bead
     )(
     implicit val params: Parameter
-    ) extends Circle {
+    ) extends Ellipse {
 
-  radius = params.beadRadius - 1
+  styleClass += "bead-view"
 
 }

@@ -38,7 +38,20 @@ class RodView[T <: Bead](
 
   styleClass += "rod-view"
 
-  val moveDistance: Int = initialBeadRod.clearedBeads.size * params.beadDiameter + params.rodLengthAugment
+  val beadWidth = orientation match {
+      case TopToBottom => params.beadWidth
+      case BottomToTop => params.beadWidth
+      case LeftToRight => params.beadHeight
+      case RightToLeft => params.beadHeight
+    }
+  val beadHeight = orientation match {
+      case TopToBottom => params.beadHeight
+      case BottomToTop => params.beadHeight
+      case LeftToRight => params.beadWidth
+      case RightToLeft => params.beadWidth
+    }
+
+  val moveDistance: Int = initialBeadRod.clearedBeads.size * beadHeight + params.rodLengthAugment
 
   val moveX: Int = orientation match {
         case LeftToRight => moveDistance
@@ -50,18 +63,35 @@ class RodView[T <: Bead](
         case BottomToTop => - moveDistance
         case _ => 0
       }
-  val offset0: Int = 1 + params.beadRadius
-  val rodLength: Int = 1 + 2 * initialBeadRod.clearedBeads.size * params.beadDiameter + params.rodLengthAugment
+
+  val offset0: Int = 1 + beadHeight / 2
+  val rodLength: Int = 1 + 2 * initialBeadRod.clearedBeads.size * beadHeight + params.rodLengthAugment
 
   val rod = new Rectangle {
     styleClass += "rod"
-    width = params.rodDiameter
-    height = rodLength
-    x = params.beadRadius - (params.rodRadius / 2) - 2
-    y = 0
+    orientation match {
+      case TopToBottom =>
+        width = params.rodDiameter
+        height = rodLength
+        x = beadWidth / 2 - params.rodDiameter / 2
+        y = 0
+      case BottomToTop => params.beadHeight
+        width = params.rodDiameter
+        height = rodLength
+        x = beadWidth / 2 - params.rodDiameter / 2
+        y = 0
+      case LeftToRight => params.beadWidth
+        width = rodLength
+        height = params.rodDiameter
+        x = 0
+        y = beadWidth / 2 - params.rodDiameter / 2
+      case RightToLeft => params.beadWidth
+        width = rodLength
+        height = params.rodDiameter
+        x = 0
+        y = beadWidth / 2 - params.rodDiameter / 2
+    }
   }
-
-  margin = Insets(12)
 
   children += rod
 
@@ -91,17 +121,18 @@ class RodView[T <: Bead](
     } yield {
       val beadView = new BeadView(bead) {
         val index = initialBeadRod.clearedBeads.indexOf(bead)
-        radius = params.beadRadius - 1
-        val offsetN = offset0 + (index * params.beadDiameter)
+        radiusX = beadWidth / 2 - 1
+        radiusY = beadHeight / 2 - 1
+        val offsetN = offset0 + (index * beadHeight)
         centerX = orientation match {
           case LeftToRight => offsetN
           case RightToLeft => rodLength - offsetN
-          case _ => params.beadRadius
+          case _ => beadWidth / 2
         }
         centerY = orientation match {
           case TopToBottom => offsetN
           case BottomToTop => rodLength - offsetN
-          case _ => params.beadRadius
+          case _ => beadHeight / 2
         }
         onMouseClicked = { ev: MouseEvent =>
           beadRod() = beadRod().moveBeads(bead)

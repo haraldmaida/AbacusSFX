@@ -22,12 +22,14 @@ import com.innoave.abacus.model.Parameter
 import scalafx.Includes._
 import scalafx.scene.layout.HBox
 
-class BoardView[T <: Bead](
+class DeckView[T <: Bead](
     val beadsRods: Seq[BeadRod[T]],
     val orientation: Orientation
     )(
     implicit val params: Parameter
     ) extends HBox {
+
+  styleClass += "deck-view"
 
   val rods: Seq[RodView[T]] = {
     for {

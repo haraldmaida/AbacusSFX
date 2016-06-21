@@ -17,7 +17,18 @@
 	-fx-background-color: slategray;
 }
 
+.board-view {
+	-fx-spacing: 12px;
+}
+
+.deck-view {
+	-fx-spacing: 12px;
+}
+
 .rod-view {
+}
+
+.bead-view {
 	
 }
 
