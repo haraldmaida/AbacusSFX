@@ -13,20 +13,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-.root {
-	-fx-background-color: papayawhip;
+.abacus {
+	-fx-background-color: slategray;
+}
+
+.rod-view {
+	
 }
 
 .bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, sienna 80% );
-}
-
-.group-marker-bead {
     -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, burlywood 80% );
 }
 
+.group-marker-bead {
+    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, firebrick 80% );
+}
+
 .rod {
-    -fx-fill: linear-gradient(sienna, burlywood 25%, saddlebrown 50%)
+    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, black, darkslategray 80% );
 }
 
 .text {

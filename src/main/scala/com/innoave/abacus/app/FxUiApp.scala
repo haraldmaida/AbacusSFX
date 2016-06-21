@@ -33,29 +33,35 @@ import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.shape.Circle
 import scalafx.scene.layout.VBox
+import scalafx.scene.layout.StackPane
+import scalafx.scene.layout.BorderPane
 
 object FxUiApp extends JFXApp {
 
   implicit val params = DefaultParameter
 
-  private val abacusBuilder = new AbacusBuilder(Soroban, Decimal)
+  private val sorobanBuilder = new AbacusBuilder(Soroban, Decimal)
+
+  val heavenDeck = sorobanBuilder.buildHeavenDeck().map { rods => new BoardView(rods, TopToBottom) }
+  val earthDeck = new BoardView(sorobanBuilder.buildEarthDeck(), BottomToTop)
+
+  val sorobanView = new VBox {
+    styleClass ++= Seq("abacus", "soroban")
+    if (heavenDeck.isDefined) {
+      children += heavenDeck.get
+    }
+    children += earthDeck
+  }
+
+  val scenePanel = new BorderPane {
+    center = sorobanView
+  }
 
   stage = new PrimaryStage {
     title = "Abacus SFX"
-    width = 1200
-    height = 800
-
-    val heavenDeck = abacusBuilder.buildHeavenDeck().map { rods => new BoardView(rods, TopToBottom) }
-    val earthDeck = new BoardView(abacusBuilder.buildEarthDeck(), BottomToTop)
-
     scene = new Scene {
-      stylesheets += "/styles/soroban.css"
-      content = new VBox {
-        if (heavenDeck.isDefined) {
-          children += heavenDeck.get
-        }
-        children += earthDeck
-      }
+      stylesheets += "/styles/abacus.css"
+      content = scenePanel
     }
   }
 
