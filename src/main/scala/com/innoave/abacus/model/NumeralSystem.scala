@@ -17,38 +17,36 @@ package com.innoave.abacus.model
 
 trait NumeralSystem {
   def radix: Radix
-  final def digits: Seq[Digit] = Seq.range(0, radix.value).map { n => digitFor(n) }
-  def digitFor(value: Int): Digit
+  final def digits: Seq[Digit] = Seq.range(0, radix.value).map { n =>
+      digitFor(n)
+    }
+  def digitFor(value: Int) =
+    if (0 <= value && value < 10)
+      Digit((0x30 + value).toChar)
+    else
+      Digit((0x37 + value).toChar)
 }
 
 sealed trait Binary extends NumeralSystem {
   override final val radix = Radix(2)
-  override final def digitFor(value: Int) = Digit((0x30 + value).toChar)
 }
 
 object Binary extends Binary
 
 sealed trait Octal extends NumeralSystem {
   override final val radix = Radix(8)
-  override final def digitFor(value: Int) = Digit((0x30 + value).toChar)
 }
 
 object Octal extends Octal
 
 sealed trait Decimal extends NumeralSystem {
   override final val radix = Radix(10)
-  override final def digitFor(value: Int) = Digit((0x30 + value).toChar)
 }
 
 object Decimal extends Decimal
 
 sealed trait Hexadecimal extends NumeralSystem {
   override final val radix = Radix(16)
-  override final def digitFor(value: Int) =
-    if (0 <= value && value < 10)
-      Digit((0x30 + value).toChar)
-    else
-      Digit((0x31 + value).toChar)
 }
 
 object Hexadecimal extends Hexadecimal
