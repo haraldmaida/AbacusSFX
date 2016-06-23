@@ -13,41 +13,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-.abacus {
-	-fx-background-color: slategray;
+package com.innoave.abacus.domain.model
+
+import scalafx.util.Duration
+
+trait Parameter {
+
+  def radix: Int
+
+  def beadHeight: Int
+  def beadWidth: Int
+
+  def rodDiameter: Int
+  def rodLengthAugment: Int
+
+  def beadMovingDuration: Duration
+
 }
 
-.board-view {
-	-fx-spacing: 12;
+trait DefaultParameter extends Parameter {
+
+  override val radix = 10
+
+  override val beadHeight = 32
+  override val beadWidth = 64
+
+  override val rodDiameter = 10
+
+  override val rodLengthAugment = 1
+
+  override val beadMovingDuration: Duration = Duration(200)
+
 }
 
-.deck-view {
-	-fx-spacing: 12;
-}
-
-.rod-view {
-}
-
-.bead-view {
-	
-}
-
-.bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, burlywood 80% );
-}
-
-.group-marker-bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, firebrick 80% );
-}
-
-.rod {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, black, darkslategray 80% );
-}
-
-.numeral-view {
-	-fx-spacing: 12;
-}
-
-.text {
-    -fx-fill: white;
-}
+object DefaultParameter extends DefaultParameter

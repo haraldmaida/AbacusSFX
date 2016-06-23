@@ -13,41 +13,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-.abacus {
-	-fx-background-color: slategray;
-}
+package com.innoave.abacus.domain.service.event
 
-.board-view {
-	-fx-spacing: 12;
-}
+import com.innoave.abacus.domain.model.Bead
+import com.innoave.abacus.domain.model.BeadRod
+import com.innoave.abacus.domain.model.Digit
 
-.deck-view {
-	-fx-spacing: 12;
-}
+trait Event
 
-.rod-view {
-}
+case class BeadsMoved[T <: Bead](
+    val oldBeadRod: BeadRod[T],
+    val newBeadRod: BeadRod[T]
+    ) extends Event
 
-.bead-view {
-	
-}
-
-.bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, burlywood 80% );
-}
-
-.group-marker-bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, firebrick 80% );
-}
-
-.rod {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, black, darkslategray 80% );
-}
-
-.numeral-view {
-	-fx-spacing: 12;
-}
-
-.text {
-    -fx-fill: white;
-}
+case class DigitChanged(
+    val position: Int,
+    val oldDigit: Digit,
+    val newDigit: Digit
+    ) extends Event

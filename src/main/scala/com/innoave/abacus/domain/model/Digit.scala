@@ -13,41 +13,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-.abacus {
-	-fx-background-color: slategray;
-}
+package com.innoave.abacus.domain.model
 
-.board-view {
-	-fx-spacing: 12;
-}
+case class Digit(
+    val value: Char
+    ) extends AnyVal {
 
-.deck-view {
-	-fx-spacing: 12;
-}
+  def toChar: Char = value
 
-.rod-view {
-}
-
-.bead-view {
-	
-}
-
-.bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, burlywood 80% );
-}
-
-.group-marker-bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, firebrick 80% );
-}
-
-.rod {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, black, darkslategray 80% );
-}
-
-.numeral-view {
-	-fx-spacing: 12;
-}
-
-.text {
-    -fx-fill: white;
 }

@@ -44,10 +44,6 @@
     -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, black, darkslategray 80% );
 }
 
-.numeral-view {
-	-fx-spacing: 12;
-}
-
 .text {
     -fx-fill: white;
 }

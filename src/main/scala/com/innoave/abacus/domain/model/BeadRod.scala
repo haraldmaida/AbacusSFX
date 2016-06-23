@@ -13,41 +13,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-.abacus {
-	-fx-background-color: slategray;
-}
+package com.innoave.abacus.domain.model
 
-.board-view {
-	-fx-spacing: 12;
-}
+trait BeadRod[T <: Bead] {
 
-.deck-view {
-	-fx-spacing: 12;
-}
+  val position: Int
 
-.rod-view {
-}
+  val clearedBeads: Seq[T]
+  val countedBeads: Seq[T]
 
-.bead-view {
-	
-}
+  private[domain] def moveBeads(touchedBead: Bead): BeadRod[T] =
+    clearedBeads.indexOf(touchedBead) match {
+      case -1 =>
+        countedBeads.indexOf(touchedBead) match {
+          case -1 =>
+            this
+          case i =>
+            copy(
+                clearedBeads ++ countedBeads.take(i + 1),
+                countedBeads.takeRight(countedBeads.size - (i + 1))
+                )
+        }
+      case i =>
+        copy(
+            clearedBeads.take(i),
+            clearedBeads.takeRight(clearedBeads.size - i) ++ countedBeads
+            )
+    }
 
-.bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, burlywood 80% );
-}
+  def copy(clearedBeads: Seq[T], countedBeads: Seq[T]): BeadRod[T]
 
-.group-marker-bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, firebrick 80% );
-}
-
-.rod {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, black, darkslategray 80% );
-}
-
-.numeral-view {
-	-fx-spacing: 12;
-}
-
-.text {
-    -fx-fill: white;
 }

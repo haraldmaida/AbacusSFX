@@ -13,41 +13,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-.abacus {
-	-fx-background-color: slategray;
+package com.innoave.abacus.domain.model
+
+trait NumeralSystem {
+  def radix: Radix
+  final def digits: Seq[Digit] = Seq.range(0, radix.value).map { n =>
+      digitFor(n)
+    }
+  def digitFor(value: Int) =
+    if (0 <= value && value < 10)
+      Digit((0x30 + value).toChar)
+    else
+      Digit((0x37 + value).toChar)
 }
 
-.board-view {
-	-fx-spacing: 12;
+sealed trait Binary extends NumeralSystem {
+  override final val radix = Radix(2)
 }
 
-.deck-view {
-	-fx-spacing: 12;
+object Binary extends Binary
+
+sealed trait Octal extends NumeralSystem {
+  override final val radix = Radix(8)
 }
 
-.rod-view {
+object Octal extends Octal
+
+sealed trait Decimal extends NumeralSystem {
+  override final val radix = Radix(10)
 }
 
-.bead-view {
-	
+object Decimal extends Decimal
+
+sealed trait Hexadecimal extends NumeralSystem {
+  override final val radix = Radix(16)
 }
 
-.bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, burlywood 80% );
-}
-
-.group-marker-bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, firebrick 80% );
-}
-
-.rod {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, black, darkslategray 80% );
-}
-
-.numeral-view {
-	-fx-spacing: 12;
-}
-
-.text {
-    -fx-fill: white;
-}
+object Hexadecimal extends Hexadecimal

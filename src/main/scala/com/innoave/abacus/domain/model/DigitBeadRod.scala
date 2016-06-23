@@ -13,41 +13,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-.abacus {
-	-fx-background-color: slategray;
+package com.innoave.abacus.domain.model
+
+case class DigitBeadRod(
+    override val position: Int,
+    override val clearedBeads: Seq[DigitBead],
+    override val countedBeads: Seq[DigitBead]
+    ) extends BeadRod[DigitBead] {
+
+  override def copy(clearedBeads: Seq[DigitBead], countedBeads: Seq[DigitBead]): DigitBeadRod =
+      DigitBeadRod(position, clearedBeads, countedBeads)
+
 }
 
-.board-view {
-	-fx-spacing: 12;
-}
+object DigitBeadRod {
 
-.deck-view {
-	-fx-spacing: 12;
-}
+  def apply(position: Int, numeralSystem: NumeralSystem): DigitBeadRod =
+      DigitBeadRod(position, DigitBead.forAllDigitsOf(numeralSystem), Seq())
 
-.rod-view {
-}
-
-.bead-view {
-	
-}
-
-.bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, burlywood 80% );
-}
-
-.group-marker-bead {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, papayawhip, firebrick 80% );
-}
-
-.rod {
-    -fx-fill: radial-gradient(center 50% 16%, radius 50%, reflect, black, darkslategray 80% );
-}
-
-.numeral-view {
-	-fx-spacing: 12;
-}
-
-.text {
-    -fx-fill: white;
 }
