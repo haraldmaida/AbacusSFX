@@ -31,26 +31,26 @@ class AbacusBuilder(
   def buildBeadFor(value: Int): DigitBead =
     DigitBead(numeralSystem.digitFor(value))
 
-  def buildBeadRodFor(position: Int, start: Int, end: Int): DigitBeadRod =
-    DigitBeadRod(position,
+  def buildBeadRodFor(position: Int, beadValue: Int, start: Int, end: Int): DigitBeadRod =
+    DigitBeadRod(position, beadValue,
       for (num <- start to end) yield { buildBeadFor(num) },
       Seq()
     )
 
-  def buildEarthDeck[T <: Bead](numberOfRods: Int = abacusSystem.typicalNumberOfRods): Seq[BeadRod[T]] =
+  def buildHeavenBeadRods[T <: Bead](numberOfRods: Int = abacusSystem.typicalNumberOfRods): Option[Seq[BeadRod[T]]] =
+    abacusSystem.numberOfFiveValueBeads.map { numberOfBeads =>
+      for (
+        position <- Seq.range(numberOfRods - 1, -1, -1)
+      ) yield {
+        buildBeadRodFor(position, 5, 1, numberOfBeads).asInstanceOf[BeadRod[T]]
+      }
+    }
+
+  def buildEarthBeadRods[T <: Bead](numberOfRods: Int = abacusSystem.typicalNumberOfRods): Seq[BeadRod[T]] =
     for (
       position <- Seq.range(numberOfRods - 1, -1, -1)
     ) yield {
-      buildBeadRodFor(position, 1, abacusSystem.numberOfOneValueBeads).asInstanceOf[BeadRod[T]]
-    }
-
-  def buildHeavenDeck[T <: Bead](numberOfRods: Int = abacusSystem.typicalNumberOfRods): Option[Seq[BeadRod[T]]] =
-    abacusSystem.numberOfFiveValueBeads.flatMap { numberOfBeads => Some(
-      for (
-      position <- Seq.range(numberOfRods - 1, -1, -1)
-      ) yield {
-        buildBeadRodFor(position, 1, numberOfBeads).asInstanceOf[BeadRod[T]]
-      })
+      buildBeadRodFor(position, 1, 1, abacusSystem.numberOfOneValueBeads).asInstanceOf[BeadRod[T]]
     }
 
 }

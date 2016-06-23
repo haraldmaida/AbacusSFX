@@ -28,9 +28,9 @@ trait AbacusService[T <: Bead] {
   def abacusSystem: AbacusSystem
   def numeralSystem: NumeralSystem
 
-  def moveBeads(touchedBead: T, beadRod: BeadRod[T]): Unit
+  def moveBeads(touchedBead: T, beadsPosition: BeadRod[T]): Unit
 
-  def digitFor(beadRod: BeadRod[T]): Digit
+  def digitFor(beadRod: BeadRod[T], upperBeadRod: Option[BeadRod[T]]): Digit
 
 }
 
@@ -41,7 +41,7 @@ object AbacusService {
 
 }
 
-class AbacusServiceImpl[T <: Bead](
+private class AbacusServiceImpl[T <: Bead](
     override val abacusSystem: AbacusSystem,
     override val numeralSystem: NumeralSystem
     ) extends AbacusService[T] {
@@ -49,12 +49,17 @@ class AbacusServiceImpl[T <: Bead](
   override def moveBeads(touchedBead: T, beadRod: BeadRod[T]) {
     val movedBeadRod = beadRod.moveBeads(touchedBead)
     EventBus.of(this).send(BeadsMoved(beadRod, movedBeadRod))
-    EventBus.of(this).send(DigitChanged(beadRod.position,
-        digitFor(beadRod), digitFor(movedBeadRod)))
   }
 
-  override def digitFor(beadRod: BeadRod[T]): Digit =
-    numeralSystem.digitFor(beadRod.countedBeads.size)
+  override def digitFor(beadRod: BeadRod[T], upperBeadRod: Option[BeadRod[T]]): Digit =
+    numeralSystem.digitFor(
+      beadRod.countedBeads.size * beadRod.beadValue + (
+        if (upperBeadRod.isDefined)
+          upperBeadRod.get.countedBeads.size * upperBeadRod.get.beadValue
+        else
+          0
+      )
+    )
 
 }
 

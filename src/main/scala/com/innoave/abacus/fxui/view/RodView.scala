@@ -18,9 +18,9 @@ package com.innoave.abacus.fxui.view
 import Orientation._
 import com.innoave.abacus.domain.model.Bead
 import com.innoave.abacus.domain.model.BeadRod
-import com.innoave.abacus.domain.model.Digit
 import com.innoave.abacus.domain.model.Parameter
 import com.innoave.abacus.domain.service.AbacusService
+import com.innoave.abacus.domain.service.EventBus
 import com.innoave.abacus.domain.service.event.BeadsMoved
 import scalafx.Includes._
 import scalafx.animation.TranslateTransition
@@ -29,7 +29,6 @@ import scalafx.geometry.Insets
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.Pane
 import scalafx.scene.shape.Rectangle
-import com.innoave.abacus.domain.service.EventBus
 
 class RodView[T <: Bead](
     val abacusService: AbacusService[T],
@@ -58,65 +57,64 @@ class RodView[T <: Bead](
       }
     ) / 2
 
-  val moveDistance: Int = initialBeadRod.clearedBeads.size * params.beadHeight + params.rodLengthAugment
+  private val moveDistance: Int = initialBeadRod.clearedBeads.size * params.beadHeight + params.rodLengthAugment
 
-  val moveX: Int = orientation match {
+  private val moveX: Int = orientation match {
         case LeftToRight => moveDistance
         case RightToLeft => - moveDistance
         case _ => 0
       }
-  val moveY: Int = orientation match {
+  private val moveY: Int = orientation match {
         case TopToBottom => moveDistance
         case BottomToTop => - moveDistance
         case _ => 0
       }
 
-  val offset0: Int = 1 + params.beadHeight / 2
-  val rodLength: Int = 1 + 2 * initialBeadRod.clearedBeads.size * params.beadHeight + params.rodLengthAugment
+  private val offset0: Int = 1 + params.beadHeight / 2
+  private val rodLength: Int = 1 + 2 * initialBeadRod.clearedBeads.size * params.beadHeight + params.rodLengthAugment
 
-  val rod = new Rectangle {
-    styleClass += "rod"
+  private val rodGraphic: Rectangle =
     orientation match {
       case TopToBottom =>
-        width = params.rodDiameter
-        height = rodLength
-        x = params.beadWidth / 2 - params.rodDiameter / 2
-        y = 0
-      case BottomToTop => params.beadHeight
-        width = params.rodDiameter
-        height = rodLength
-        x = params.beadWidth / 2 - params.rodDiameter / 2
-        y = 0
-      case LeftToRight => params.beadWidth
-        width = rodLength
-        height = params.rodDiameter
-        x = 0
-        y = params.beadWidth / 2 - params.rodDiameter / 2
-      case RightToLeft => params.beadWidth
+        verticalRodGraphic
+      case BottomToTop =>
+        verticalRodGraphic
+      case LeftToRight =>
+        horizontalRodGraphic
+      case RightToLeft =>
+        horizontalRodGraphic
+    }
+
+  private def horizontalRodGraphic = new Rectangle {
+      styleClass += "rod"
         width = rodLength
         height = params.rodDiameter
         x = 0
         y = params.beadWidth / 2 - params.rodDiameter / 2
     }
+
+  private def verticalRodGraphic = new Rectangle {
+        width = params.rodDiameter
+        height = rodLength
+        x = params.beadWidth / 2 - params.rodDiameter / 2
+        y = 0
   }
 
-  children += rod
+  children += rodGraphic
 
   val beadRod: ObjectProperty[BeadRod[T]] = ObjectProperty(initialBeadRod)
   beadRod.onChange { (_, oldBeadRod, newBeadRod) =>
-      if (newBeadRod.position == oldBeadRod.position) {
-        newBeadRod.clearedBeads.reverse.foreach { bead =>
-          beadViewFor(bead).foreach { bv =>
-            if (bv.translateX != 0 || bv.translateY != 0) {
-              translateToCleared(bv)
-            }
+      newBeadRod.clearedBeads.reverse.foreach { bead =>
+        beadViewFor(bead).foreach { bv =>
+          if (bv.translateX != 0 || bv.translateY != 0) {
+            translateToCleared(bv)
           }
         }
-        newBeadRod.countedBeads.foreach { bead =>
-          beadViewFor(bead).foreach { bv =>
-            if (bv.translateX != moveX || bv.translateY != moveY) {
-              translateToCounted(bv)
-            }
+      }
+      newBeadRod.countedBeads.foreach { bead =>
+        beadViewFor(bead).foreach { bv =>
+          if (bv.translateX != moveX || bv.translateY != moveY) {
+            translateToCounted(bv)
           }
         }
       }
@@ -148,6 +146,14 @@ class RodView[T <: Bead](
       children += beadView
       beadView
     }
+//
+//  EventBus.of(abacusService).register(classOf[BeadsMoved[T]], { (ev: BeadsMoved[T]) =>
+//      if (ev.newBeadRod.position == beadRod().position &&
+//          ev.newBeadRod.beadValue == beadRod().beadValue
+//          ) {
+//        beadRod() = ev.newBeadRod
+//      }
+//    })
 
   def beadViewFor(bead: Bead): Option[BeadView[T]] =
     beads.find { x => x.bead == bead }

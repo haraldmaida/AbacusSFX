@@ -19,13 +19,13 @@ import com.innoave.abacus.domain.model.Digit
 import com.innoave.abacus.domain.model.Number
 import com.innoave.abacus.domain.model.Parameter
 import com.innoave.abacus.domain.service.AbacusService
+import com.innoave.abacus.domain.service.EventBus
+import com.innoave.abacus.domain.service.event.DigitChanged
 import scalafx.Includes._
 import scalafx.beans.property.ObjectProperty
 import scalafx.scene.layout.HBox
 import scalafx.scene.layout.Pane
 import scalafx.scene.layout.VBox
-import com.innoave.abacus.domain.service.EventBus
-import com.innoave.abacus.domain.service.event.DigitChanged
 
 trait NumeralView extends Pane {
 
@@ -33,10 +33,18 @@ trait NumeralView extends Pane {
 
   def abacusService: AbacusService[_]
 
-  def digits: Seq[DigitView]
+  def digitViews: Seq[DigitView]
+
+  def digitViewFor(position: Int): Option[DigitView] =
+    if (position < digitViews.size)
+      Some(digitViews(digitViews.size - 1 - position))
+    else
+      None
 
   def setDigit(position: Int, value: Digit) {
-    digits(digits.size - 1 - position).setText(value.toChar)
+    digitViewFor(position).foreach { digitView =>
+        digitView.setText(value.toChar)
+      }
   }
 
   protected def buildDigitView(digit: Digit, height: Int, width: Int): DigitView =
@@ -58,14 +66,14 @@ class HNumeralView(
     implicit params: Parameter
     ) extends HBox with NumeralView {
 
-  override val digits: Seq[DigitView] =
+  override val digitViews: Seq[DigitView] =
     for {
       digit <- initialDigits
     } yield {
       buildDigitView(digit, params.beadWidth, params.beadHeight)
     }
 
-  children ++= digits
+  children ++= digitViews
 
 }
 
@@ -76,13 +84,13 @@ class VNumeralView(
     implicit params: Parameter
     ) extends VBox with NumeralView {
 
-  override val digits: Seq[DigitView] =
+  override val digitViews: Seq[DigitView] =
     for {
       digit <- initialDigits
     } yield {
       buildDigitView(digit, params.beadWidth, params.beadHeight)
     }
 
-  children ++= digits
+  children ++= digitViews
 
 }

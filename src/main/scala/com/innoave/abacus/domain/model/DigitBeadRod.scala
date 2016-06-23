@@ -17,18 +17,19 @@ package com.innoave.abacus.domain.model
 
 case class DigitBeadRod(
     override val position: Int,
+    override val beadValue: Int,
     override val clearedBeads: Seq[DigitBead],
     override val countedBeads: Seq[DigitBead]
     ) extends BeadRod[DigitBead] {
 
   override def copy(clearedBeads: Seq[DigitBead], countedBeads: Seq[DigitBead]): DigitBeadRod =
-      DigitBeadRod(position, clearedBeads, countedBeads)
+      DigitBeadRod(position, beadValue, clearedBeads, countedBeads)
 
 }
 
 object DigitBeadRod {
 
-  def apply(position: Int, numeralSystem: NumeralSystem): DigitBeadRod =
-      DigitBeadRod(position, DigitBead.forAllDigitsOf(numeralSystem), Seq())
+  def apply(position: Int, beadValue: Int, numeralSystem: NumeralSystem): DigitBeadRod =
+      DigitBeadRod(position, beadValue, DigitBead.forAllDigitsOf(numeralSystem), Seq())
 
 }

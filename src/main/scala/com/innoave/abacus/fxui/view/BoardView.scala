@@ -17,20 +17,21 @@ package com.innoave.abacus.fxui.view
 
 import com.innoave.abacus.domain.model.AbacusSystem
 import com.innoave.abacus.domain.model.Bead
+import com.innoave.abacus.domain.model.BeadRod
 import com.innoave.abacus.domain.model.Digit
-import com.innoave.abacus.domain.model.DigitBead
 import com.innoave.abacus.domain.model.NumeralSystem
 import com.innoave.abacus.domain.model.Parameter
 import com.innoave.abacus.domain.model.Position._
 import com.innoave.abacus.domain.service.AbacusBuilder
 import com.innoave.abacus.domain.service.AbacusService
+import com.innoave.abacus.domain.service.EventBus
+import com.innoave.abacus.domain.service.event.BeadsMoved
+import com.innoave.abacus.domain.service.event.DigitChanged
 import com.innoave.abacus.fxui.view.Orientation._
 import scalafx.Includes._
 import scalafx.scene.layout.BorderPane
 import scalafx.scene.layout.VBox
 import scalafx.scene.layout.HBox
-import com.innoave.abacus.domain.model.BeadRod
-import com.innoave.abacus.domain.model.DigitBeadRod
 
 class BoardView[T <: Bead](
     val abacus: AbacusService[T],
@@ -45,24 +46,24 @@ class BoardView[T <: Bead](
 
   private val abacusBuilder = new AbacusBuilder(abacus.abacusSystem, abacus.numeralSystem)
 
-  val heavenDeck: Option[DeckView[T]] = abacusBuilder.buildHeavenDeck(
-      numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods)
-    ).map { rods: Seq[BeadRod[T]] =>
-      abacus.abacusSystem.clearedAt match {
-        case Top => new HDeckView(abacus, rods, TopToBottom)
-        case Bottom => new HDeckView(abacus, rods, BottomToTop)
-        case Left => new VDeckView(abacus, rods, LeftToRight)
-        case Right => new VDeckView(abacus, rods, RightToLeft)
-        case Outmost => new HDeckView(abacus, rods, TopToBottom)
-        case Innermost => new HDeckView(abacus, rods, BottomToTop)
-      }
-    }
+  val heavenDeck: Option[DeckView[T]] =
+    abacusBuilder.buildHeavenBeadRods(
+        numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods)).map { rods: Seq[BeadRod[T]] =>
+            abacus.abacusSystem.clearedAt match {
+              case Top => new HDeckView(abacus, rods, TopToBottom)
+              case Bottom => new HDeckView(abacus, rods, BottomToTop)
+              case Left => new VDeckView(abacus, rods, LeftToRight)
+              case Right => new VDeckView(abacus, rods, RightToLeft)
+              case Outmost => new HDeckView(abacus, rods, TopToBottom)
+              case Innermost => new HDeckView(abacus, rods, BottomToTop)
+            }
+        }
 
   val earthDeck: DeckView[T] = {
-    val rods: Seq[BeadRod[T]] = abacusBuilder.buildEarthDeck(
+    val rods: Seq[BeadRod[T]] = abacusBuilder.buildEarthBeadRods(
         numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods))
     abacus.abacusSystem.clearedAt match {
-      case Top => new HDeckView(abacus, rods, TopToBottom)
+      case Top => new HDeckView(abacus, rods,TopToBottom)
       case Bottom => new HDeckView(abacus, rods, BottomToTop)
       case Left => new VDeckView(abacus, rods, LeftToRight)
       case Right => new VDeckView(abacus, rods, RightToLeft)
@@ -115,5 +116,22 @@ class BoardView[T <: Bead](
           new Digit('0')
         })
   }
+
+  EventBus.of(abacus).register(classOf[BeadsMoved[T]], { ev: BeadsMoved[T] =>
+      val position = ev.newBeadRod.position
+      ev.newBeadRod.beadValue match {
+        case 5 => //moved beads are on heaven deck
+          earthDeck.beadRodFor(position, 1).foreach { beadRod =>
+              val oldDigit = abacus.digitFor(beadRod, Some(ev.oldBeadRod))
+              val newDigit = abacus.digitFor(beadRod, Some(ev.newBeadRod))
+              EventBus.of(abacus).send(DigitChanged(position, oldDigit, newDigit))
+            }
+        case 1 => //moved beads are on earth deck
+          val upperBeadRod = heavenDeck.flatMap { x => x.beadRodFor(position, 5) }
+          val oldDigit = abacus.digitFor(ev.oldBeadRod, upperBeadRod)
+          val newDigit = abacus.digitFor(ev.newBeadRod, upperBeadRod)
+          EventBus.of(abacus).send(DigitChanged(position, oldDigit, newDigit))
+      }
+    })
 
 }

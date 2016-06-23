@@ -49,6 +49,7 @@ class DigitView(
   def resetDisplay(duration: Duration = animationTime) {
     animateDisplayChange(initialDigit, duration)
   }
+  resetDisplay()
 
   private def animateDisplayChange(newValue: Digit, duration: Duration) {
     val nanoDuration = duration.toMillis * 1E6

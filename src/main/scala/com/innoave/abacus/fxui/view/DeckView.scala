@@ -31,15 +31,16 @@ trait DeckView[T <: Bead] extends Pane {
 
   def abacusService: AbacusService[T]
 
-  def rods: Seq[RodView[T]]
+  val rodViews: Seq[RodView[T]]
 
   protected def buildRodView(
-      beadsRod: BeadRod[T], orientation: Orientation
+      beadRod: BeadRod[T],
+      orientation: Orientation
       )(
       implicit params: Parameter
       ): RodView[T] = {
-    val rodView = new RodView(abacusService, beadsRod, orientation)
-    if (beadsRod.clearedBeads.size > 2 && beadsRod.position % 3 == 2) {
+    val rodView = new RodView(abacusService, beadRod, orientation)
+    if (beadRod.clearedBeads.size > 2 && beadRod.position % 3 == 2) {
       rodView.beads.last.styleClass += "group-marker-bead"
       rodView.beads.take(rodView.beads.size - 1).foreach { bv => bv.styleClass += "bead" }
     } else {
@@ -48,19 +49,30 @@ trait DeckView[T <: Bead] extends Pane {
     rodView
   }
 
-  def setRod(position: Int, value: BeadRod[T]) {
-    rods(rods.size - 1 - position).beadRod() = value
+  def setBeadRod(value: BeadRod[T]) {
+    rodViewFor(value.position, value.beadValue).foreach { rodView =>
+        rodView.beadRod() = value
+      }
   }
 
+  def beadRodFor(position: Int, beadValue: Int): Option[BeadRod[T]] =
+    rodViewFor(position, beadValue).map { x => x.beadRod() }
+
+  def rodViewFor(position: Int, beadValue: Int): Option[RodView[T]] =
+    rodViews.find { x =>
+      x.beadRod().position == position &&
+      x.beadRod().beadValue == beadValue
+    }
+
   EventBus.of(abacusService).register(classOf[BeadsMoved[T]], { (ev: BeadsMoved[T]) =>
-      setRod(ev.newBeadRod.position, ev.newBeadRod)
+      setBeadRod(ev.newBeadRod)
     })
 
 }
 
 class HDeckView[T <: Bead](
     val abacusService: AbacusService[T],
-    val beadsRods: Seq[BeadRod[T]],
+    val beadRods: Seq[BeadRod[T]],
     val orientation: Orientation
     )(
     implicit val params: Parameter
@@ -68,21 +80,21 @@ class HDeckView[T <: Bead](
 
   styleClass += "deck-view"
 
-  override val rods: Seq[RodView[T]] = {
+  override val rodViews: Seq[RodView[T]] = {
     for {
-      beadsRod <- beadsRods
+      beadRod <- beadRods
     } yield {
-      buildRodView(beadsRod, orientation)
+      buildRodView(beadRod, orientation)
     }
   }
 
-  children = rods
+  children = rodViews
 
 }
 
 class VDeckView[T <: Bead](
     val abacusService: AbacusService[T],
-    val beadsRods: Seq[BeadRod[T]],
+    val beadRods: Seq[BeadRod[T]],
     val orientation: Orientation
     )(
     implicit val params: Parameter
@@ -90,14 +102,14 @@ class VDeckView[T <: Bead](
 
   styleClass += "deck-view"
 
-  override val rods: Seq[RodView[T]] = {
+  override val rodViews: Seq[RodView[T]] = {
     for {
-      beadsRod <- beadsRods
+      beadRod <- beadRods
     } yield {
-      buildRodView(beadsRod, orientation)
+      buildRodView(beadRod, orientation)
     }
   }
 
-  children = rods
+  children = rodViews
 
 }

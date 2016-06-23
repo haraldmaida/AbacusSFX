@@ -17,10 +17,14 @@ package com.innoave.abacus.domain.model
 
 trait BeadRod[T <: Bead] {
 
-  val position: Int
+  def position: Int
 
-  val clearedBeads: Seq[T]
-  val countedBeads: Seq[T]
+  def beadValue: Int
+
+  def clearedBeads: Seq[T]
+  def countedBeads: Seq[T]
+
+  def copy(clearedBeads: Seq[T], countedBeads: Seq[T]): BeadRod[T]
 
   private[domain] def moveBeads(touchedBead: Bead): BeadRod[T] =
     clearedBeads.indexOf(touchedBead) match {
@@ -40,7 +44,5 @@ trait BeadRod[T <: Bead] {
             clearedBeads.takeRight(clearedBeads.size - i) ++ countedBeads
             )
     }
-
-  def copy(clearedBeads: Seq[T], countedBeads: Seq[T]): BeadRod[T]
 
 }

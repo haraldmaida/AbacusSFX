@@ -24,7 +24,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move all beads to the counted position, when first bead is touched" in {
 
     val beadRod = DigitBeadRod(
-        0,
+        0, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3')),
@@ -37,7 +37,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('0')))
 
     movedBeads shouldBe DigitBeadRod(
-        0,
+        0, 1,
         Seq(
         ),
         Seq(
@@ -52,7 +52,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move one bead to the counted position, when last bead is touched" in {
 
     val beadRod = DigitBeadRod(
-        1,
+        1, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3')),
@@ -65,7 +65,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('1')))
 
     movedBeads shouldBe DigitBeadRod(
-        1,
+        1, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3')),
@@ -81,7 +81,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move two beads to counted position, when second last bead is touched" in {
 
     val beadRod = DigitBeadRod(
-        999999,
+        999999, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3')),
@@ -94,7 +94,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('2')))
 
     movedBeads shouldBe DigitBeadRod(
-        999999,
+        999999, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3'))
@@ -109,7 +109,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move all but one bead to the counted position, when second bead is touched" in {
 
     val beadRod = DigitBeadRod(
-        3,
+        3, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3')),
@@ -122,7 +122,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('9')))
 
     movedBeads shouldBe DigitBeadRod(
-        3,
+        3, 1,
         Seq(
             DigitBead(Digit('0'))
         ),
@@ -138,7 +138,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move all beads to the cleared position, when last bead is touched" in {
 
     val beadRod = DigitBeadRod(
-        4,
+        4, 1,
         Seq(
         ),
         Seq(
@@ -151,7 +151,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('1')))
 
     movedBeads shouldBe DigitBeadRod(
-        4,
+        4, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3')),
@@ -166,7 +166,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move one bead to the cleared position, when first bead is touched" in {
 
     val beadRod = DigitBeadRod(
-        5,
+        5, 1,
         Seq(
         ),
         Seq(
@@ -179,7 +179,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('0')))
 
     movedBeads shouldBe DigitBeadRod(
-        5,
+        5, 1,
         Seq(
             DigitBead(Digit('0'))
         ),
@@ -195,7 +195,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move two beads to the cleared position, when second bead is touched" in {
 
     val beadRod = DigitBeadRod(
-        6,
+        6, 1,
         Seq(
         ),
         Seq(
@@ -208,7 +208,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('9')))
 
     movedBeads shouldBe DigitBeadRod(
-        6,
+        6, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9'))
         ),
@@ -224,7 +224,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move all but one bead to the cleared position, when second last bead is touched" in {
 
     val beadRod = DigitBeadRod(
-        7,
+        7, 1,
         Seq(
         ),
         Seq(
@@ -237,7 +237,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('2')))
 
     movedBeads shouldBe DigitBeadRod(
-        7,
+        7, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3')),
@@ -253,7 +253,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move all cleared beads to the counted position, when first bead is touched" in {
 
     val beadRod = DigitBeadRod(
-        8,
+        8, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3')),
@@ -267,7 +267,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('0')))
 
     movedBeads shouldBe DigitBeadRod(
-        8,
+        8, 1,
         Seq(
         ),
         Seq(
@@ -282,7 +282,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move one bead from cleared to counted position, when last cleared bead is touched" in {
 
     val beadRod = DigitBeadRod(
-        9,
+        9, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3')),
@@ -296,7 +296,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('2')))
 
     movedBeads shouldBe DigitBeadRod(
-        9,
+        9, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3'))
@@ -311,7 +311,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move that one bead to the cleared position, when it is touched" in {
 
     val beadRod = DigitBeadRod(
-        9,
+        9, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3')),
@@ -325,7 +325,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('1')))
 
     movedBeads shouldBe DigitBeadRod(
-        9,
+        9, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3')),
@@ -340,7 +340,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move all counted beads to the cleared position, when last bead is touched" in {
 
     val beadRod = DigitBeadRod(
-        10,
+        10, 1,
         Seq(
             DigitBead(Digit('0'))
         ),
@@ -354,7 +354,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('1')))
 
     movedBeads shouldBe DigitBeadRod(
-        10,
+        10, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9')), DigitBead(Digit('8')), DigitBead(Digit('7')),
             DigitBead(Digit('6')), DigitBead(Digit('5')), DigitBead(Digit('4')), DigitBead(Digit('3')),
@@ -369,7 +369,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
       "move one bead from counted to the cleared position, when first counted bead is touched" in {
 
     val beadRod = DigitBeadRod(
-        11,
+        11, 1,
         Seq(
             DigitBead(Digit('0'))
         ),
@@ -383,7 +383,7 @@ class BeadRodSpec extends FlatSpec with Matchers {
     val movedBeads = beadRod.moveBeads(DigitBead(Digit('9')))
 
     movedBeads shouldBe DigitBeadRod(
-        11,
+        11, 1,
         Seq(
             DigitBead(Digit('0')), DigitBead(Digit('9'))
         ),
