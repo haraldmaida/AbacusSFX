@@ -19,6 +19,8 @@ import Position._
 
 trait AbacusSystem {
 
+  def name: String
+
   def numberOfOneValueBeads: Int
 
   def numberOfFiveValueBeads: Option[Int]
@@ -46,6 +48,8 @@ object AbacusSystem {
  */
 sealed trait Schoty extends AbacusSystem {
 
+  override val name = "Schoty"
+
   override val numberOfOneValueBeads = 10
 
   override val numberOfFiveValueBeads = None
@@ -65,6 +69,8 @@ object Schoty extends Schoty
  */
 sealed trait Soroban extends AbacusSystem {
 
+  override val name = "Soroban"
+
   override val numberOfOneValueBeads = 4
 
   override val numberOfFiveValueBeads = Some(1)
@@ -83,6 +89,8 @@ object Soroban extends Soroban
  * Suanpan - the chinese abacus
  */
 sealed trait Suanpan extends AbacusSystem {
+
+  override val name = "Suanpan"
 
   override val numberOfOneValueBeads = 5
 

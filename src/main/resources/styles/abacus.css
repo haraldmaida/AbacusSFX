@@ -21,6 +21,18 @@
 	-fx-spacing: 12;
 }
 
+.board-header {
+	-fx-hgap: 12;
+	-fx-vgap: 12;
+	-fx-alignment: center;
+	-fx-grid-lines-visible: false;
+}
+
+.board-header .button {
+	-fx-font-size: 24;
+	-fx-content-display: text-only;
+}
+
 .deck-pane {
 	-fx-spacing: 12;
 }

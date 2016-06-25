@@ -44,6 +44,8 @@ class BoardView[T <: Bead](
 
   stylesheets += abacus.abacusSystem.stylesheet
 
+  visible = false
+
   private val abacusBuilder = new AbacusBuilder(abacus.abacusSystem, abacus.numeralSystem)
 
   val heavenDeck: Option[DeckView[T]] =
