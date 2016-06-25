@@ -42,8 +42,7 @@ object ReleaseProcess {
 //      commitReleaseVersion,
       tagRelease,
       publishArtifacts,
-	  ReleaseStep(releaseStepCommand("makeSite")),
-	  ReleaseStep(releaseStepCommand("ghpagesPushSite")),
+	  ReleaseStep(releaseStepCommand("jdkPackager:packageBin")),
 //      setNextVersion,
 //      commitNextVersion,
       pushChanges
