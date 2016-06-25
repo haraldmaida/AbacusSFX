@@ -7,9 +7,9 @@ This project started mainly to demonstrate the usage [ScalaTestFX](https://githu
 - switch between different types of Abaci: Soroban (Japanese), Suanban (Chinese) and Schoty (Russian)
 - display the current number of each rod in a split-flap display
 
-[![Build Status](https://img.shields.io/travis/haraldmaida/AbacusSFX/master.svg?style=flat-square)](https://travis-ci.org/haraldmaida/AbacusSFX)
-
 ## Status
+
+[![Build Status](https://img.shields.io/travis/haraldmaida/AbacusSFX/master.svg?style=flat-square)](https://travis-ci.org/haraldmaida/AbacusSFX)
 
 A first version of the Abacus application is finished and works quite well.
 
