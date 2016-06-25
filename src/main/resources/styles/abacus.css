@@ -21,8 +21,15 @@
 	-fx-spacing: 12;
 }
 
-.deck-view {
+.deck-pane {
 	-fx-spacing: 12;
+}
+
+.deck-view {
+	-fx-hgap: 12;
+	-fx-vgap: 12;
+	-fx-alignment: center;
+	-fx-grid-lines-visible: false;
 }
 
 .rod-view {
@@ -45,7 +52,14 @@
 }
 
 .numeral-view {
-	-fx-spacing: 12;
+	-fx-padding: 12;
+	-fx-hgap: 12;
+	-fx-vgap: 12;
+	-fx-alignment: center;
+	-fx-grid-lines-visible: false;
+}
+
+.digit-view {
 }
 
 .text {

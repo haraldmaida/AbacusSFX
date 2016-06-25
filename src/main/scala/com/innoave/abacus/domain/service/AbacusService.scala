@@ -21,7 +21,6 @@ import com.innoave.abacus.domain.model.BeadRod
 import com.innoave.abacus.domain.model.Digit
 import com.innoave.abacus.domain.model.NumeralSystem
 import com.innoave.abacus.domain.service.event.BeadsMoved
-import com.innoave.abacus.domain.service.event.DigitChanged
 
 trait AbacusService[T <: Bead] {
 

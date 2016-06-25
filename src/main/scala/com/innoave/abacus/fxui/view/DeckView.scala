@@ -23,30 +23,32 @@ import com.innoave.abacus.domain.service.AbacusService
 import com.innoave.abacus.domain.service.EventBus
 import com.innoave.abacus.domain.service.event.BeadsMoved
 import scalafx.Includes._
-import scalafx.scene.layout.HBox
-import scalafx.scene.layout.VBox
-import scalafx.scene.layout.Pane
+import scalafx.scene.layout.GridPane
+import scalafx.scene.Node
 
-trait DeckView[T <: Bead] extends Pane {
+class DeckView[T <: Bead](
+    val abacusService: AbacusService[T],
+    val beadRods: Seq[BeadRod[T]],
+    val orientation: Orientation
+    )(
+    implicit val params: Parameter
+    ) extends GridPane {
 
-  def abacusService: AbacusService[T]
+  styleClass += "deck-view"
 
-  val rodViews: Seq[RodView[T]]
-
-  protected def buildRodView(
-      beadRod: BeadRod[T],
-      orientation: Orientation
-      )(
-      implicit params: Parameter
-      ): RodView[T] = {
-    val rodView = new RodView(abacusService, beadRod, orientation)
-    if (beadRod.clearedBeads.size > 2 && beadRod.position % 3 == 2) {
-      rodView.beads.last.styleClass += "group-marker-bead"
-      rodView.beads.take(rodView.beads.size - 1).foreach { bv => bv.styleClass += "bead" }
-    } else {
-      rodView.beads.foreach { bv => bv.styleClass += "bead" }
+  val rodViews: Seq[RodView[T]] = {
+    for {
+      beadRod <- beadRods
+    } yield {
+      val rodView = new RodView(abacusService, beadRod, orientation)
+      if (beadRod.clearedBeads.size > 2 && beadRod.position % 3 == 2) {
+        rodView.beads.last.styleClass += "group-marker-bead"
+        rodView.beads.take(rodView.beads.size - 1).foreach { bv => bv.styleClass += "bead" }
+      } else {
+        rodView.beads.foreach { bv => bv.styleClass += "bead" }
+      }
+      rodView
     }
-    rodView
   }
 
   def setBeadRod(value: BeadRod[T]) {
@@ -64,52 +66,19 @@ trait DeckView[T <: Bead] extends Pane {
       x.beadRod().beadValue == beadValue
     }
 
+  orientation match {
+    case TopToBottom =>
+      addRow(0, rodViews.map { v => Node.sfxNode2jfx(v) }: _*)
+    case BottomToTop =>
+      addRow(0, rodViews.map { v => Node.sfxNode2jfx(v) }: _*)
+    case LeftToRight =>
+      addColumn(0, rodViews.map { v => Node.sfxNode2jfx(v) }: _*)
+    case RightToLeft =>
+      addColumn(0, rodViews.map { v => Node.sfxNode2jfx(v) }: _*)
+  }
+
   EventBus.of(abacusService).register(classOf[BeadsMoved[T]], { (ev: BeadsMoved[T]) =>
       setBeadRod(ev.newBeadRod)
     })
-
-}
-
-class HDeckView[T <: Bead](
-    val abacusService: AbacusService[T],
-    val beadRods: Seq[BeadRod[T]],
-    val orientation: Orientation
-    )(
-    implicit val params: Parameter
-    ) extends HBox with DeckView[T] {
-
-  styleClass += "deck-view"
-
-  override val rodViews: Seq[RodView[T]] = {
-    for {
-      beadRod <- beadRods
-    } yield {
-      buildRodView(beadRod, orientation)
-    }
-  }
-
-  children = rodViews
-
-}
-
-class VDeckView[T <: Bead](
-    val abacusService: AbacusService[T],
-    val beadRods: Seq[BeadRod[T]],
-    val orientation: Orientation
-    )(
-    implicit val params: Parameter
-    ) extends VBox with DeckView[T] {
-
-  styleClass += "deck-view"
-
-  override val rodViews: Seq[RodView[T]] = {
-    for {
-      beadRod <- beadRods
-    } yield {
-      buildRodView(beadRod, orientation)
-    }
-  }
-
-  children = rodViews
 
 }

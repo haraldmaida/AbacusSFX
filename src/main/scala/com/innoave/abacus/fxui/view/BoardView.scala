@@ -49,27 +49,29 @@ class BoardView[T <: Bead](
   val heavenDeck: Option[DeckView[T]] =
     abacusBuilder.buildHeavenBeadRods(
         numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods)).map { rods: Seq[BeadRod[T]] =>
-            abacus.abacusSystem.clearedAt match {
-              case Top => new HDeckView(abacus, rods, TopToBottom)
-              case Bottom => new HDeckView(abacus, rods, BottomToTop)
-              case Left => new VDeckView(abacus, rods, LeftToRight)
-              case Right => new VDeckView(abacus, rods, RightToLeft)
-              case Outmost => new HDeckView(abacus, rods, TopToBottom)
-              case Innermost => new HDeckView(abacus, rods, BottomToTop)
+            val orientation = abacus.abacusSystem.clearedAt match {
+              case Top => TopToBottom
+              case Bottom => BottomToTop
+              case Left => LeftToRight
+              case Right => RightToLeft
+              case Outmost => TopToBottom
+              case Innermost => BottomToTop
             }
+            new DeckView(abacus, rods, orientation)
         }
 
   val earthDeck: DeckView[T] = {
     val rods: Seq[BeadRod[T]] = abacusBuilder.buildEarthBeadRods(
         numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods))
-    abacus.abacusSystem.clearedAt match {
-      case Top => new HDeckView(abacus, rods,TopToBottom)
-      case Bottom => new HDeckView(abacus, rods, BottomToTop)
-      case Left => new VDeckView(abacus, rods, LeftToRight)
-      case Right => new VDeckView(abacus, rods, RightToLeft)
-      case Outmost => new HDeckView(abacus, rods, BottomToTop)
-      case Innermost => new HDeckView(abacus, rods, TopToBottom)
+    val orientation = abacus.abacusSystem.clearedAt match {
+      case Top => TopToBottom
+      case Bottom => BottomToTop
+      case Left => LeftToRight
+      case Right => RightToLeft
+      case Outmost => BottomToTop
+      case Innermost => TopToBottom
     }
+    new DeckView(abacus, rods, orientation)
   }
 
   private def createPane = abacus.abacusSystem.clearedAt match {
@@ -82,6 +84,7 @@ class BoardView[T <: Bead](
     }
 
   val deckPane = createPane
+  deckPane.styleClass += "deck-pane"
 
   if (heavenDeck.isDefined) {
     deckPane.children += heavenDeck.get
@@ -92,30 +95,30 @@ class BoardView[T <: Bead](
 
   abacus.abacusSystem.clearedAt match {
     case Top =>
-      top = new HNumeralView(abacus, Seq.fill(numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods)) {
-          new Digit('0')
-        })
+      top = buildHorizontalNumeralView
     case Bottom =>
-      top = new HNumeralView(abacus, Seq.fill(numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods)) {
-          new Digit('0')
-        })
+      top = buildHorizontalNumeralView
     case Left =>
-      right = new VNumeralView(abacus, Seq.fill(numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods)) {
-          new Digit('0')
-        })
+      right = buildVerticalNumeralView
     case Right =>
-      left = new VNumeralView(abacus, Seq.fill(numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods)) {
-          new Digit('0')
-        })
+      left = buildVerticalNumeralView
     case Outmost =>
-      top = new HNumeralView(abacus, Seq.fill(numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods)) {
-          new Digit('0')
-        })
+      top = buildHorizontalNumeralView
     case Innermost =>
-      top = new HNumeralView(abacus, Seq.fill(numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods)) {
-          new Digit('0')
-        })
+      top = buildHorizontalNumeralView
   }
+
+  private def buildHorizontalNumeralView = new HNumeralView(abacus,
+      Seq.fill(numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods)) {
+          new Digit('0')
+        }
+    )
+
+  private def buildVerticalNumeralView = new VNumeralView(abacus,
+      Seq.fill(numberOfRods.getOrElse(abacus.abacusSystem.typicalNumberOfRods)) {
+          new Digit('0')
+        }
+    )
 
   EventBus.of(abacus).register(classOf[BeadsMoved[T]], { ev: BeadsMoved[T] =>
       val position = ev.newBeadRod.position

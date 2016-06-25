@@ -15,50 +15,44 @@
  */
 package com.innoave.abacus.fxui.view
 
-import scala.collection.JavaConversions._
-import scala.language.postfixOps
 import com.innoave.abacus.domain.model.Digit
+import com.innoave.abacus.domain.model.NumeralSystem
 import eu.hansolo.enzo.splitflap.SplitFlap
+import eu.hansolo.enzo.splitflap.SplitFlapBuilder
 import scalafx.Includes._
 import scalafx.beans.property.ObjectProperty
-import scalafx.animation.AnimationTimer
+import scalafx.scene.layout.Pane
 import scalafx.util.Duration
 
 class DigitView(
-    val initialDigit: Digit
-    ) extends SplitFlap {
+    val initialDigit: Digit,
+    val numeralSystem: NumeralSystem
+    ) extends Pane {
 
-  getStyleClass += "digit-view"
+  styleClass += "digit-view"
+
+  val splitFlap: SplitFlap = SplitFlapBuilder.create.
+      selection(numeralSystem.digits.map { x => x.toChar.toString }.toArray).
+      build
+
+  def scaleSplitFlapTo(newHeight: Int) = {
+    splitFlap.setMaxWidth(newHeight * splitFlap.getPrefWidth / splitFlap.getPrefHeight)
+    splitFlap.setMaxHeight(newHeight)
+  }
 
   flipTime = Duration(50)
-  setSelection(Array(" ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"))
 
-  var animationTime: Duration = Duration(2E9)
-
-  def flipTime = getFlipTime
+  def flipTime = splitFlap.getFlipTime
   def flipTime_=(duration: Duration) {
-    setFlipTime(duration.toMillis)
+    splitFlap.setFlipTime(duration.toMillis)
   }
 
   val digit = ObjectProperty(initialDigit)
 
   digit onChange { (_, oldValue, newValue) =>
-    animateDisplayChange(newValue, animationTime)
+    splitFlap.setText(newValue.toChar)
   }
 
-  def resetDisplay(duration: Duration = animationTime) {
-    animateDisplayChange(initialDigit, duration)
-  }
-  resetDisplay()
-
-  private def animateDisplayChange(newValue: Digit, duration: Duration) {
-    val nanoDuration = duration.toMillis * 1E6
-    val start = System.nanoTime
-    AnimationTimer { now =>
-      if (now > start + nanoDuration) {
-        setText(newValue.toChar)
-      }
-    } start
-  }
+  children += splitFlap
 
 }

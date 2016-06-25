@@ -40,17 +40,19 @@ object EventBus {
 
 class EventBusImpl extends EventBus {
 
-  private val eventHandler: mutable.Map[String, Set[Event => Any]] = mutable.Map()
+  private val eventHandler: mutable.Map[String, Seq[Event => Any]] = mutable.Map()
 
   override def register[T <: Event](eventType: Class[T], onEvent: T => Any) {
-    val handlerSet = eventHandler.getOrElse(eventType.getName, Set[Event => Any]())
-    eventHandler.put(eventType.getName, handlerSet + onEvent.asInstanceOf[Event => Any])
+    val handlerSet = eventHandler.getOrElse(eventType.getName, Seq[Event => Any]())
+    eventHandler.put(eventType.getName,
+        handlerSet :+ onEvent.asInstanceOf[Event => Any])
   }
 
   override def unregister[T <: Event](eventType: Class[T], onEvent: T => Any) {
     val handlerSet = eventHandler.get(eventType.getName)
     if (handlerSet.isDefined) {
-      eventHandler.put(eventType.getName, handlerSet.get - onEvent.asInstanceOf[Event => Any])
+      eventHandler.put(eventType.getName,
+          handlerSet.get filter { x => x == onEvent.asInstanceOf[Event => Any] })
     }
   }
 

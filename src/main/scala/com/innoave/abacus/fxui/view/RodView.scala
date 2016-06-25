@@ -87,18 +87,19 @@ class RodView[T <: Bead](
 
   private def horizontalRodGraphic = new Rectangle {
       styleClass += "rod"
-        width = rodLength
-        height = params.rodDiameter
-        x = 0
-        y = params.beadWidth / 2 - params.rodDiameter / 2
+      width = rodLength
+      height = params.rodDiameter
+      x = 0
+      y = params.beadWidth / 2 - params.rodDiameter / 2
     }
 
   private def verticalRodGraphic = new Rectangle {
-        width = params.rodDiameter
-        height = rodLength
-        x = params.beadWidth / 2 - params.rodDiameter / 2
-        y = 0
-  }
+      styleClass += "rod"
+      width = params.rodDiameter
+      height = rodLength
+      x = params.beadWidth / 2 - params.rodDiameter / 2
+      y = 0
+    }
 
   children += rodGraphic
 

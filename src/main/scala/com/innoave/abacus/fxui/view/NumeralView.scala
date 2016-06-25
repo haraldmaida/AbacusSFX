@@ -26,8 +26,9 @@ import scalafx.beans.property.ObjectProperty
 import scalafx.scene.layout.HBox
 import scalafx.scene.layout.Pane
 import scalafx.scene.layout.VBox
+import scalafx.scene.layout.GridPane
 
-trait NumeralView extends Pane {
+trait NumeralView extends GridPane {
 
   styleClass += "numeral-view"
 
@@ -43,14 +44,13 @@ trait NumeralView extends Pane {
 
   def setDigit(position: Int, value: Digit) {
     digitViewFor(position).foreach { digitView =>
-        digitView.setText(value.toChar)
+        digitView.digit() = value
       }
   }
 
-  protected def buildDigitView(digit: Digit, height: Int, width: Int): DigitView =
-    new DigitView(digit) {
-      setMaxHeight(height)
-      setMaxWidth(width)
+  protected def buildDigitView(digit: Digit, h: Int): DigitView =
+    new DigitView(digit, abacusService.numeralSystem) {
+      scaleSplitFlapTo(h)
     }
 
   EventBus.of(abacusService).register(classOf[DigitChanged], { ev: DigitChanged =>
@@ -64,16 +64,16 @@ class HNumeralView(
     val initialDigits: Seq[Digit]
     )(
     implicit params: Parameter
-    ) extends HBox with NumeralView {
+    ) extends NumeralView {
 
   override val digitViews: Seq[DigitView] =
     for {
       digit <- initialDigits
     } yield {
-      buildDigitView(digit, params.beadWidth, params.beadHeight)
+      buildDigitView(digit, params.beadWidth)
     }
 
-  children ++= digitViews
+  addRow(0, (digitViews.map { v => Pane.sfxPane2jfx(v) }): _*)
 
 }
 
@@ -82,15 +82,15 @@ class VNumeralView(
     val initialDigits: Seq[Digit]
     )(
     implicit params: Parameter
-    ) extends VBox with NumeralView {
+    ) extends NumeralView {
 
   override val digitViews: Seq[DigitView] =
     for {
       digit <- initialDigits
     } yield {
-      buildDigitView(digit, params.beadWidth, params.beadHeight)
+      buildDigitView(digit, params.beadWidth)
     }
 
-  children ++= digitViews
+  addColumn(0, (digitViews.map { v => Pane.sfxPane2jfx(v) }): _*)
 
 }
