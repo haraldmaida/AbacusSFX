@@ -1,5 +1,6 @@
 import scala.xml._
 import sbtrelease._
+import com.typesafe.sbt.packager.SettingsHelper._
 
 name := "abacus-sfx"
 
@@ -10,7 +11,11 @@ homepage := Some(url("https://github.com/haraldmaida/AbacusSFX"))
 startYear := Some(2016)
 licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
 
-mainClass in (Compile, run) := Some("com.innoave.abacus.fxui.app.FxUiApp")
+val pkgMaintainer = "Harald Maida"
+val pkgSummary = "Abacus - counting and calculating"
+val pkgDescription = "Abacus - easy counting and calculating tool" 
+
+mainClass in Compile := Some("com.innoave.abacus.fxui.app.FxUiApp")
 
 scalaVersion := "2.11.8"
 
@@ -26,7 +31,8 @@ parallelExecution in Test := false
 
 enablePlugins(
   GitBranchPrompt,
-  GitVersioning
+  GitVersioning,
+  JDKPackagerPlugin
 )
 
 packageOptions <+= (name, version, organization) map {
@@ -56,6 +62,28 @@ git.gitTagToVersionNumber := {
   case _ => None
 }
 git.useGitDescribe := true
+
+//
+// Native Packaging
+//
+jdkPackagerType := "all"
+lazy val bundleExtension = sys.props("os.name").toLowerCase match {
+    case os if os.contains("win") => "exe"
+    case os if os.contains("mac") => "dmg"
+    case os if os.contains("nix") => "rpm"
+    case _ => "unknown"
+  }
+makeDeploymentSettings(JDKPackager, packageBin in JDKPackager, bundleExtension)
+makeDeploymentSettings(Universal, packageBin in Universal, "zip")
+lazy val iconExt = sys.props("os.name").toLowerCase match {
+    case os if os.contains("mac") => ".icns"
+    case os if os.contains("win") => ".ico"
+    case _ => "-256.png"
+  }
+
+jdkAppIcon := Some(baseDirectory.value / "src" / "main" / "resources" / "images" / ("abacus" + iconExt))
+jdkPackagerProperties := Map("app.name" -> name.value, "app.version" -> version.value)
+jdkPackagerAppArgs := Seq(pkgMaintainer, pkgSummary, pkgDescription)
 
 //
 // Release Process
