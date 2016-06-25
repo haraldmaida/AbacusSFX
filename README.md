@@ -2,7 +2,7 @@
 
 A software [Abacus](https://en.wikipedia.org/wiki/Abacus) implemented in Scala as [ScalaFX](http://www.scalafx.org) application.
 
-This project started mainly to demonstrate the usage [ScalaTestFX](https://github.com/haraldmaida/ScalaTestFX) for automated UI-tests and to evaluate improvements and enhancements for [ScalaTestFX](https://github.com/haraldmaida/ScalaTestFX). Meanwhile this Abacus implementation supports additional features like
+This project started mainly to demonstrate the usage [ScalaTestFX](https://github.com/haraldmaida/ScalaTestFX) for automated UI-tests and to evaluate improvements and enhancements for [ScalaTestFX](https://github.com/haraldmaida/ScalaTestFX). Meanwhile this Abacus application grew to a quite feature rich implementation. Here are some of the enhanced features:
 
 - switch between different types of Abaci: Soroban (Japanese), Suanban (Chinese) and Schoty (Russian)
 - display the current number of each rod in a split-flap display
