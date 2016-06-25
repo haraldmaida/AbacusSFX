@@ -1,8 +1,21 @@
 # Abacus SFX &nbsp;&nbsp;&nbsp; [![Bintray JCenter](https://img.shields.io/bintray/v/haraldmaida/maven/abacussfx.svg?label=release&style=flat-square)](https://bintray.com/haraldmaida/maven/abacussfx) [![License](http://img.shields.io/:license-Apache%202.0-red.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
-A software [Abacus](https://en.wikipedia.org/wiki/Abacus) implemented in Scala as [ScalaFX](http://www.scalafx.org) application. and [ScalaTestFX](https://github.com/haraldmaida/ScalaTestFX) for automated UI-tests.
+A software [Abacus](https://en.wikipedia.org/wiki/Abacus) implemented in Scala as [ScalaFX](http://www.scalafx.org) application.
+
+This project started mainly to demonstrate the usage [ScalaTestFX](https://github.com/haraldmaida/ScalaTestFX) for automated UI-tests and to evaluate improvements and enhancements for [ScalaTestFX](https://github.com/haraldmaida/ScalaTestFX). Meanwhile this Abacus implementation supports additional features like
+
+- switch between different types of Abaci: Soroban (Japanese), Suanban (Chinese) and Schoty (Russian)
+- display the current number of each rod in a split-flap display
 
 [![Build Status](https://img.shields.io/travis/haraldmaida/AbacusSFX/master.svg?style=flat-square)](https://travis-ci.org/haraldmaida/AbacusSFX)
+
+## Status
+
+A first version of the Abacus application is finished and works quite well.
+
+Unit tests for the domain layer are available.
+
+Now it's time to write the ScalaTestFX test cases to test the UI ;-)
 
 ## Goals
 
@@ -13,17 +26,12 @@ The two goals of this project are:
 
 As a result I hope to create ideas for improving [ScalaTestFX](https://github.com/haraldmaida/ScalaTestFX), especially the test DSL for controlling and assertion of the UI under test.
 
-## Status
-
-A first version of the Abacus application is finished and works quite well.
-
-Now it's time to write the ScalaTestFX test cases ;-)
-
 ## Motivation
 
 I wanted to create a small [ScalaFX](http://www.scalafx.org) application to demonstrate the usage of  [ScalaTestFX](https://github.com/haraldmaida/ScalaTestFX) based on a "real world" application. While i was groping around for ideas what this application should be I stumbled over the [Abacus JavaFX application created by Dierk](https://github.com/Dierk/learnJavaFx) as a tutorial application for learning JavaFX.
 
 Inspired by Dierk's Abacus application I got fascinated in Abaci in general.
+
 
 
 ## License
