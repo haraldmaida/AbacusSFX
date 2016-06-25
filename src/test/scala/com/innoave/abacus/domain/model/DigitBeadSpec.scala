@@ -18,12 +18,6 @@ package com.innoave.abacus.domain.model
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
 
-import com.innoave.abacus.domain.model.Binary;
-import com.innoave.abacus.domain.model.Decimal;
-import com.innoave.abacus.domain.model.DigitBead;
-import com.innoave.abacus.domain.model.Hexadecimal;
-import com.innoave.abacus.domain.model.Octal;
-
 class DigitBeadSpec extends FlatSpec with Matchers {
 
   "DigitBead for all digits of the decimal system" should
