@@ -20,6 +20,7 @@ Now it's time to write the ScalaTestFX test cases to test the UI ;-)
 ## Goals
 
 The two goals of this project are:
+
 1. creating a small application to demonstrate the usage of [ScalaTestFX](https://github.com/haraldmaida/ScalaTestFX) with.
 
 2. playing around with different styles of writing test code to find most efficient ways of writing and maintaining test cases for automated UI-tests.
