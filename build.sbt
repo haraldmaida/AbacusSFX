@@ -19,6 +19,9 @@ mainClass in Compile := Some("com.innoave.abacus.fxui.app.FxUiApp")
 
 scalaVersion := "2.11.8"
 
+// repository for scalatestfx
+resolvers += Resolver.bintrayRepo("haraldmaida", "maven")
+
 libraryDependencies ++= Seq(
   "io.scalatestfx" %% "scalatestfx" % "0.0.2-alpha" % Test,
   "org.scalafx" %% "scalafx" % "8.0.92-R10"
