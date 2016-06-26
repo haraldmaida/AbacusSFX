@@ -1,4 +1,4 @@
-# Abacus SFX &nbsp;&nbsp;&nbsp; [![Bintray JCenter](https://img.shields.io/bintray/v/haraldmaida/maven/abacussfx.svg?label=release&style=flat-square)](https://bintray.com/haraldmaida/maven/abacussfx) [![License](http://img.shields.io/:license-Apache%202.0-red.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.txt)
+# Abacus SFX &nbsp;&nbsp;&nbsp; [![Bintray JCenter](https://img.shields.io/bintray/v/haraldmaida/maven/abacus-sfx.svg?label=release&style=flat-square)](https://bintray.com/haraldmaida/maven/abacus-sfx) [![License](http://img.shields.io/:license-Apache%202.0-red.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 A software [Abacus](https://en.wikipedia.org/wiki/Abacus) implemented in Scala as [ScalaFX](http://www.scalafx.org) application.
 
