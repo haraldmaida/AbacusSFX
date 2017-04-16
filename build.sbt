@@ -26,7 +26,7 @@ scalaVersion := "2.12.1"
 resolvers += Resolver.bintrayRepo("haraldmaida", "maven")
 
 libraryDependencies ++= Seq(
-  "io.scalatestfx" %% "scalatestfx" % "0.1.0-SNAPSHOT" % Test,
+  "io.scalatestfx" %% "scalatestfx" % "0.1.0" % Test,
   "org.scalafx" %% "scalafx" % "8.0.102-R11"
 )
 
