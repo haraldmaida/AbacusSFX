@@ -94,7 +94,7 @@ object FxUiApp extends JFXApp {
     title = "Abacus SFX"
     scene = new Scene {
       stylesheets += "/styles/abacus.css"
-      content = scenePanel
+      root = scenePanel
     }
 
   }
